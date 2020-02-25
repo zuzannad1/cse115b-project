@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Button, TouchableHighlight} from 'react-native';
+import Voice from 'react-native-voice';
 import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {dialogflowConfig} from './config';
@@ -16,14 +17,67 @@ class App extends Component {
       {
         _id: 1,
         text:
-          'Hi! I am your Glooko Buddy 🤖.\n\nI am here to answer your questions about diabetes. ',
+        'Hi! I am your Glooko Buddy 🤖.\n\nI am here to answer your questions about diabetes. ',
         createdAt: new Date(),
         user: BOT_USER,
       },
     ],
+    recognized: '',
+    pitch: '',
+    error: '',
+    started: '',
+    results: [],
   };
 
-  componentDidMount() {
+constructor(props) {
+  super(props);
+  Voice.onSpeechStart = this.onSpeechStartfn.bind(this);
+  Voice.onSpeechRecognized = this.onSpeechRecognizedfn.bind(this);
+  Voice.onSpeechError = this.onSpeechErrorfn.bind(this);
+  Voice.onSpeechVolumeChanged = this.onSpeechVolumeChangedfn.bind(this);
+  //Voice.onSpeechEnd = this.onSpeechEndfn;
+  Voice.onSpeechResults = this.onSpeechResultsfn.bind(this);
+}
+
+  onSpeechStartfn= e => {
+    console.log('onSpeechStart: ',e);
+  	this.setState({
+  	   started: 'ok'
+  	});
+  }
+  onSpeechRecognizedfn(e) {
+    console.log('onSpeechRecognized: ',e);
+    this.setState({
+      recognized: 'ok',
+    });
+  }  
+  onSpeechResultsfn(e) {
+    console.log('onSpeechResults: ',e);
+    this.setState({
+      results: e.value,
+    });
+  }
+  
+  onSpeechErrorfn = e => {
+    // eslint-disable-next-line
+    console.log('onSpeechError: ', e);
+    this.setState({
+      error: JSON.stringify(e.error),
+    });
+  };
+  onSpeechVolumeChangedfn = e => {
+    // eslint-disable-next-line
+    console.log('onSpeechVolumeChanged: ', e);
+    this.setState({
+      pitch: e.value,
+    });
+  };
+
+  componentWillnmount() {
+    Voice.destroy().then(Voice.removeAllListeners);
+  }
+
+  async componentDidMount() {
     Dialogflow_V2.setConfiguration(
       dialogflowConfig.client_email,
       dialogflowConfig.private_key,
@@ -70,9 +124,66 @@ class App extends Component {
     }));
   }
 
-  render() {
+  _startRecognition = async () => {
+    this.setState({
+      recognized: '',
+      pitch: '',
+      error: '',
+      started: '',
+      results: [],
+    });
+    try {
+      await Voice.start('en-US');
+    } catch (e) {
+      console.error(e);
+    }
+}
+
+  _stopRecognizing = async () => {
+    try {
+      await Voice.stop();
+    } catch (e) {
+      //eslint-disable-next-line
+      console.error("Voice.stop failed");
+    }
+  };
+
+  _cancelRecognizing = async () => {
+    try {
+      await Voice.cancel();
+    } catch (e) {
+      //eslint-disable-next-line
+      console.error(e);
+    }
+  };
+  startRecognition(e) {
+    Voice.start('en-US');
+  }
+  
+  render () {
     return (
       <View style={styles.container}>
+        <Text style={styles.instructions}>Press the button and start speaking.</Text>
+        <Text style={styles.stat}>{`Started: ${this.state.started}`}</Text>
+        <Text style={styles.stat}>{`Recognized: ${this.state.recognized}`}</Text>
+        <Text style={styles.stat}>{`Pitch: ${this.state.pitch}`}</Text>
+        <Text style={styles.stat}>{`Error: ${this.state.error}`}</Text>
+        <Text style={styles.stat}>Results</Text>
+        {this.state.results.map((result, index) => {
+          return (
+            <Text key={`result-${index}`} style={styles.stat}>
+              {result}
+            </Text>
+          );
+        })}
+        <Button onPress={this._startRecognition} title= 'Start'>
+        </Button>
+        <TouchableHighlight onPress={this._stopRecognizing}>
+          <Text style={styles.action}>Stop Recognizing</Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._cancelRecognizing}>
+          <Text style={styles.action}>Cancel</Text>
+        </TouchableHighlight>
         <GiftedChat
           messages={this.state.messages}
           onSend={messages => this.onSend(messages)}
@@ -84,12 +195,20 @@ class App extends Component {
     );
   }
 }
-//
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+    instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  stat: {
+    textAlign: 'center',
+    color: '#B0171F',
+    marginBottom: 1,
+  },
 });
-
 export default App;
