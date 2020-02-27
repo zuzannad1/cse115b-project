@@ -4,6 +4,16 @@ import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {dialogflowConfig} from './config';
 
+const admin = require('firebase-admin');
+
+let serviceAccount = require('Keys/GlookoBuddyAdminKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+let db = admin.firestore();
+
 const BOT_USER = {
   _id: 2,
   name: 'Glooko Buddy',
@@ -45,11 +55,25 @@ class App extends Component {
     );
   }
 
-  handleResponse(result) {
+handleResponse(result) {
     console.log(result);
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
     let payload = result.queryResult.webhookPayload;
-    this.showResponse(text, payload);
+    if (text == "read") {
+
+      text = "What would you like to read?";
+      text = db.collection('users').then((snapshot) => { snapshot.forEach((doc) => {
+                console.log(doc.id, '=>', doc.data());
+              });
+            })
+            .catch((err) => {
+              console.log('Error getting documents', err);
+            });;
+      this.showResponse(text, payload);
+
+    }else{
+      this.showResponse(text, payload);
+    }
   }
 
   showResponse(text, payload) {

@@ -1,0 +1,10 @@
+dependencies: \
+  /Users/kevin/Documents/CloneTests/cse115b-project/node_modules/react-native/Libraries/NativeAnimation/RCTAnimationUtils.m \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Target\ Support\ Files/React-RCTAnimation/React-RCTAnimation-prefix.pch \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Headers/Public/React-Core/React/RCTAnimationUtils.h \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Headers/Public/React-Core/React/RCTDefines.h \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Headers/Public/React-Core/React/RCTInspectorDevServerHelper.h \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Headers/Public/React-Core/React/RCTPackagerConnection.h \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Headers/Public/React-Core/React/RCTLog.h \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Headers/Public/React-Core/React/RCTAssert.h \
+  /Users/kevin/Documents/CloneTests/cse115b-project/ios/Pods/Headers/Public/React-Core/React/RCTUtils.h

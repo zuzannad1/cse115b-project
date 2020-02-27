@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>logFormatVersion</key>
+	<integer>10</integer>
+	<key>logs</key>
+	<dict>
+		<key>08322287-2EC4-4696-86D4-16515F2521DE</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>08322287-2EC4-4696-86D4-16515F2521DE.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>GlookoBuddy project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>GlookoBuddy</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace GlookoBuddy with scheme GlookoBuddy and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>603916001.12593496</real>
+			<key>timeStoppedRecording</key>
+			<real>603916005.15912402</real>
+			<key>title</key>
+			<string>Building workspace GlookoBuddy with scheme GlookoBuddy and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>08322287-2EC4-4696-86D4-16515F2521DE</string>
+		</dict>
+		<key>0C5CE8E4-5A54-4925-9AB1-9529D2315829</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>0C5CE8E4-5A54-4925-9AB1-9529D2315829.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>GlookoBuddy project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>GlookoBuddy</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace GlookoBuddy with scheme GlookoBuddy and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>603875746.22757602</real>
+			<key>timeStoppedRecording</key>
+			<real>603875747.17962003</real>
+			<key>title</key>
+			<string>Building workspace GlookoBuddy with scheme GlookoBuddy and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>0C5CE8E4-5A54-4925-9AB1-9529D2315829</string>
+		</dict>
+	</dict>
+</dict>
+</plist>
