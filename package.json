@@ -26,6 +26,7 @@
     "react-native-path": "0.0.5",
     "react-native-stream": "^0.1.9",
     "react-native-url": "0.0.2",
+    "react-native-util": "^1.0.2",
     "react-native-voice": "^0.3.0",
     "rn-nodeify": "^10.2.0"
   },
