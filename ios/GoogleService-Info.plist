@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>608968999200-6btudl7scmt97rjg2cm1b3r2k0c064l9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.608968999200-6btudl7scmt97rjg2cm1b3r2k0c064l9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCbYCCdrd__b28bBWNlzogy2uth4YDAWfM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>608968999200</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Glookobuddy</string>
+	<key>PROJECT_ID</key>
+	<string>glookobuddy-frddnv</string>
+	<key>STORAGE_BUCKET</key>
+	<string>glookobuddy-frddnv.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:608968999200:ios:42ddd2867d1f983aa7d745</string>
+	<key>DATABASE_URL</key>
+	<string>https://glookobuddy-frddnv.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,0 +1,23 @@
+{
+  "name": "react-native-dialogflow",
+  "version": "3.2.2",
+  "authors": {
+    "name": "Anton Spöck",
+    "url": "https://github.com/spoeck"
+  },
+  "license": "MIT",
+  "homepage": "git+https://github.com/innFactory/react-native-dialogflow.git",
+  "source": {
+    "git": "git+https://github.com/innFactory/react-native-dialogflow.git.git"
+  },
+  "summary": "A React-Native Bridge for the Google Dialogflow SDK",
+  "source_files": "ios/**/*.{h,m}",
+  "platforms": {
+    "ios": "8.0"
+  },
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

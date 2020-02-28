@@ -6,13 +6,20 @@ import {dialogflowConfig} from './config';
 
 const admin = require('firebase-admin');
 
-let serviceAccount = require('Keys/GlookoBuddyAdminKey.json');
+let serviceAccount = require('./Keys/GlookoBuddyAdminKey.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
 let db = admin.firestore();
+
+// const admin = require('firebase-admin');
+// const functions = require('firebase-functions');
+
+// admin.initializeApp(functions.config().firebase);
+
+// let db = admin.firestore();
 
 const BOT_USER = {
   _id: 2,
@@ -62,13 +69,13 @@ handleResponse(result) {
     if (text == "read") {
 
       text = "What would you like to read?";
-      text = db.collection('users').then((snapshot) => { snapshot.forEach((doc) => {
-                console.log(doc.id, '=>', doc.data());
-              });
-            })
-            .catch((err) => {
-              console.log('Error getting documents', err);
-            });;
+      // text = db.collection('users').then((snapshot) => { snapshot.forEach((doc) => {
+      //           console.log(doc.id, '=>', doc.data());
+      //         });
+      //       })
+      //       .catch((err) => {
+      //         console.log('Error getting documents', err);
+      //       });;
       this.showResponse(text, payload);
 
     }else{

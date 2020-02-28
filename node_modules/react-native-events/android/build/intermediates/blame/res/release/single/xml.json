@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/lfinke/Code/SoundHole/node_modules/react-native-events/android/build/intermediates/res/merged/release/xml/network_security_config.xml",
+        "source": "/Users/lfinke/.gradle/caches/transforms-1/files-1.1/react-native-0.58.4.aar/7d8ae0801bdd050e6b66bbec46c312a8/res/xml/network_security_config.xml"
+    },
+    {
+        "merged": "/Users/lfinke/Code/SoundHole/node_modules/react-native-events/android/build/intermediates/res/merged/release/xml/preferences.xml",
+        "source": "/Users/lfinke/.gradle/caches/transforms-1/files-1.1/react-native-0.58.4.aar/7d8ae0801bdd050e6b66bbec46c312a8/res/xml/preferences.xml"
+    }
+]
