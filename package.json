@@ -10,9 +10,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "assert": "^2.0.0",
     "firebase": "^7.9.2",
     "firebase-admin": "^8.9.2",
+    "fs": "0.0.1-security",
     "google-auth-library": "^5.10.1",
+    "pdfkit": "^0.11.0",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-crypto": "^2.2.0",
@@ -24,11 +27,16 @@
     "react-native-https": "^1.0.0",
     "react-native-os": "^1.2.6",
     "react-native-path": "0.0.5",
+    "react-native-randombytes": "^3.5.3",
     "react-native-stream": "^0.1.9",
     "react-native-url": "0.0.2",
     "react-native-util": "^1.0.2",
     "react-native-voice": "^0.3.0",
-    "rn-nodeify": "^10.2.0"
+    "rn-nodeify": "^10.2.0",
+    "stream": "0.0.2",
+    "url": "^0.11.0",
+    "yarn": "^1.22.0",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
