@@ -4,8 +4,8 @@ import {Text, View} from 'react-native';
 import {StyleSheet, Button, TouchableHighlight} from 'react-native';
 import Voice from 'react-native-voice';
 import {Dialogflow_V2} from 'react-native-dialogflow';
-import {GiftedChat} from 'react-native-gifted-chat';
-import {dialogflowConfig} from './config';
+import {GiftedChat, Bubble} from 'react-native-gifted-chat';
+import {dialogflowConfig} from '../config';
 
 const BOT_USER = {
   _id: 2,
@@ -161,7 +161,29 @@ class ChatbotScreen extends Component {
   startRecognition(e) {
     Voice.start('en-US');
   }
-
+  renderBubble = props => {
+    return (
+      <Bubble
+        {...props}
+        textStyle={{
+          left: {
+            color: 'white',
+          },
+          right: {
+            color: 'white',
+          },
+        }}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#C6A8F1',
+          },
+          left: {
+            backgroundColor: '#7fc8f1',
+          },
+        }}
+      />
+    );
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -195,6 +217,7 @@ class ChatbotScreen extends Component {
           user={{
             _id: 1,
           }}
+          renderBubble={this.renderBubble}
         />
       </View>
     );
