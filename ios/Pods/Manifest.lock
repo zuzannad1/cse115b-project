@@ -459,6 +459,8 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-dialogflow (3.2.2):
     - React
+  - react-native-randombytes (3.5.3):
+    - React
   - react-native-voice (0.3.0):
     - React
   - React-RCTActionSheet (0.61.5):
@@ -496,7 +498,11 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
+  - RNEventEmitter (1.0.15):
+    - React
   - RNFS (2.16.6):
+    - React
+  - RNOS (1.2.6):
     - React
   - Yoga (1.14.0)
 
@@ -521,6 +527,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-dialogflow (from `../node_modules/react-native-dialogflow`)
+  - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-voice (from `../node_modules/react-native-voice`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -533,7 +540,9 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNEventEmitter (from `../node_modules/react-native-events`)
   - RNFS (from `../node_modules/react-native-fs`)
+  - RNOS (from `../node_modules/react-native-os`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -592,6 +601,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-dialogflow:
     :path: "../node_modules/react-native-dialogflow"
+  react-native-randombytes:
+    :path: "../node_modules/react-native-randombytes"
   react-native-voice:
     :path: "../node_modules/react-native-voice"
   React-RCTActionSheet:
@@ -614,8 +625,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNEventEmitter:
+    :path: "../node_modules/react-native-events"
   RNFS:
     :path: "../node_modules/react-native-fs"
+  RNOS:
+    :path: "../node_modules/react-native-os"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -657,6 +672,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-dialogflow: 0270c0cac1568abfed789317d51e4e5dc0913cf1
+  react-native-randombytes: 991545e6eaaf700b4ee384c291ef3d572e0b2ca8
   react-native-voice: 0253a5cde07d9c675463e36f7e668a76b0825de4
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -668,7 +684,9 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
+  RNEventEmitter: a43a853a0de1dee334d007a4b3d2a6dc29c77270
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
+  RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: a45920641d27dfa39c15510772e632b9525899eb
