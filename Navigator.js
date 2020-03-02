@@ -14,7 +14,7 @@ const TabNavigator = createBottomTabNavigator(
     MyReadings: {
       screen: ReadingsScreen,
       navigationOptions: {
-        tabBarLabel: 'Log readings',
+        tabBarLabel: 'My Readings',
         tabBarIcon: ({tintColor}) => (
           <Icon name="file-o" size={25} color={tintColor} />
         ),
@@ -66,7 +66,7 @@ const SwitchNavigator = createSwitchNavigator(
     },
   },
   {
-    initialRouteName: 'Tabs',
+    initialRouteName: 'Login',
   },
 );
 

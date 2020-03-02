@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
 class EducationalContent extends Component {
   render() {
     return (

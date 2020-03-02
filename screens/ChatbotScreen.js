@@ -110,8 +110,14 @@ class ChatbotScreen extends Component {
   handleResponse(result) {
     console.log(result);
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
-    let payload = result.queryResult.webhookPayload;
-    this.showResponse(text, payload);
+    if(text == 'read') {
+      text = 'Your data is:';
+      let payload = result.queryResult.webhookPayload;
+      this.showResponse(text, payload);
+    } else {
+      let payload = result.queryResult.webhookPayload;
+      this.showResponse(text, payload);
+    }
   }
 
   showResponse(text, payload) {
