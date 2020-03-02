@@ -6,6 +6,7 @@ import Signup from './screens/Signup';
 import Profile from './screens/MyProfileScreen';
 import ChatbotScreen from './screens/ChatbotScreen';
 import ReadingsScreen from './screens/ReadingsScreen';
+import EducationalContent from './screens/EducationalContent'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TabNavigator = createBottomTabNavigator(
@@ -34,6 +35,15 @@ const TabNavigator = createBottomTabNavigator(
         tabBarLabel: 'My Profile',
         tabBarIcon: ({tintColor}) => (
           <Icon name="user" size={25} color={tintColor} />
+        ),
+      },
+    },
+    EducationalContent: {
+      screen: EducationalContent,
+      navigationOptions: {
+        tabBarLabel: 'EDU',
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="graduation-cap" size={25} color={tintColor} />
         ),
       },
     },
