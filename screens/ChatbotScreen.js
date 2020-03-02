@@ -18,8 +18,13 @@ class ChatbotScreen extends Component {
     messages: [
       {
         _id: 1,
-        text:
-          'Hi! I am your Glooko Buddy 🤖.\n\nI am here to answer your questions about diabetes. ',
+        text: 'Lost on what I may help with? \nSay: "What do you know?"',
+        createdAt: new Date(),
+        user: BOT_USER,
+      },
+        {
+        _id: 2,
+        text: 'Hi! I am GlookoBuddy 🤖 \nI am here to answer your questions about diabetes.',
         createdAt: new Date(),
         user: BOT_USER,
       },

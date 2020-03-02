@@ -5,7 +5,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Text,
+  Text, Button,
 } from 'react-native';
 
 class Signup extends React.Component {
@@ -49,6 +49,10 @@ class Signup extends React.Component {
         <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
+        <Button
+          title="Already have an account? Log in"
+          onPress={() => this.props.navigation.navigate('Login')}
+        />
       </View>
     );
   }
