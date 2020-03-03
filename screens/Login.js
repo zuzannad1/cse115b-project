@@ -69,6 +69,8 @@ const styles = StyleSheet.create({
     borderColor: '#d3d3d3',
     borderBottomWidth: 1,
     textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#000',
   },
   button: {
     marginTop: 30,

@@ -30,35 +30,15 @@ class ChatbotScreen extends Component {
         user: BOT_USER,
       },
     ],
-    recognized: '',
-    pitch: '',
-    error: '',
-    started: '',
     results: [],
   };
 
   constructor(props) {
     super(props);
-    Voice.onSpeechStart = this.onSpeechStartfn.bind(this);
-    Voice.onSpeechRecognized = this.onSpeechRecognizedfn.bind(this);
-    Voice.onSpeechError = this.onSpeechErrorfn.bind(this);
-    Voice.onSpeechVolumeChanged = this.onSpeechVolumeChangedfn.bind(this);
-    //Voice.onSpeechEnd = this.onSpeechEndfn;
     Voice.onSpeechResults = this.onSpeechResultsfn.bind(this);
+    Voice.onSpeechEnd = this.onSpeechEndfn.bind(this);
   }
 
-  onSpeechStartfn = e => {
-    console.log('onSpeechStart: ', e);
-    this.setState({
-      started: 'ok',
-    });
-  };
-  onSpeechRecognizedfn(e) {
-    console.log('onSpeechRecognized: ', e);
-    this.setState({
-      recognized: 'ok',
-    });
-  }
   onSpeechResultsfn(e) {
     console.log('onSpeechResults: ', e);
     this.setState({
@@ -66,22 +46,10 @@ class ChatbotScreen extends Component {
     });
   }
 
-  onSpeechErrorfn = e => {
-    // eslint-disable-next-line
-    console.log('onSpeechError: ', e);
-    this.setState({
-      error: JSON.stringify(e.error),
-    });
-  };
-  onSpeechVolumeChangedfn = e => {
-    // eslint-disable-next-line
-    console.log('onSpeechVolumeChanged: ', e);
-    this.setState({
-      pitch: e.value,
-    });
-  };
-
-  componentWillnmount() {
+  onSpeechEndfn(e) {
+    this._addVoiceMsg(this.state.results);
+  }
+   componentWillnmount() {
     Voice.destroy().then(Voice.removeAllListeners);
   }
 
@@ -140,10 +108,6 @@ class ChatbotScreen extends Component {
 
   _startRecognition = async () => {
     this.setState({
-      recognized: '',
-      pitch: '',
-      error: '',
-      started: '',
       results: [],
     });
     try {
@@ -153,26 +117,35 @@ class ChatbotScreen extends Component {
     }
   };
 
-  _stopRecognizing = async () => {
+  _stopRecognition = async () => {
     try {
       await Voice.stop();
     } catch (e) {
-      //eslint-disable-next-line
-      console.error("Voice.stop failed");
+      console.log(e);
     }
   };
 
-  _cancelRecognizing = async () => {
-    try {
-      await Voice.cancel();
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
-    }
+ _addVoiceMsg = reses => {
+  console.log('addingVoiceMsg')
+  let res = reses[0];
+  let count = {
+    _id: this.state.messages.length + 1,
+    text: res,
+    createdAt: new Date(),
+    user: {_id: 1,}
   };
-  startRecognition(e) {
-    Voice.start('en-US');
-  }
+  this.setState(previousState => ({
+    messages: GiftedChat.append(previousState.messages, [count]),
+   }));
+   Dialogflow_V2.requestQuery(
+      res,
+      result => this.handleResponse(result),
+      error => console.log(error),
+    );
+
+  
+}
+
   renderBubble = props => {
     return (
       <Bubble
@@ -199,30 +172,6 @@ class ChatbotScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.instructions}>
-          Press the button and start speaking.
-        </Text>
-        <Text style={styles.stat}>{`Started: ${this.state.started}`}</Text>
-        <Text style={styles.stat}>{`Recognized: ${
-          this.state.recognized
-        }`}</Text>
-        <Text style={styles.stat}>{`Pitch: ${this.state.pitch}`}</Text>
-        <Text style={styles.stat}>{`Error: ${this.state.error}`}</Text>
-        <Text style={styles.stat}>Results</Text>
-        {this.state.results.map((result, index) => {
-          return (
-            <Text key={`result-${index}`} style={styles.stat}>
-              {result}
-            </Text>
-          );
-        })}
-        <Button onPress={this._startRecognition} title="Start" />
-        <TouchableHighlight onPress={this._stopRecognizing}>
-          <Text style={styles.action}>Stop Recognizing</Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this._cancelRecognizing}>
-          <Text style={styles.action}>Cancel</Text>
-        </TouchableHighlight>
         <GiftedChat
           messages={this.state.messages}
           onSend={messages => this.onSend(messages)}
@@ -231,6 +180,10 @@ class ChatbotScreen extends Component {
           }}
           renderBubble={this.renderBubble}
         />
+        <Button onPress = {this._startRecognition} title='Start'>
+       </Button>
+       <Button onPress = {this._stopRecognition} title='End'>
+       </Button>
       </View>
     );
   }
