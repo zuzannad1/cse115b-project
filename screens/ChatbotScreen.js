@@ -7,6 +7,8 @@ import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import {dialogflowConfig} from '../config';
 
+import Firebase from '../config/Firebase';
+
 const BOT_USER = {
   _id: 2,
   name: 'Glooko Buddy',
@@ -78,14 +80,37 @@ class ChatbotScreen extends Component {
   handleResponse(result) {
     console.log(result);
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
-    if(text == 'read') {
+    var res = text.split(" ");
+    if(res[0] == 'read') {
       text = 'Your data is:';
+      //result = FBListener(get user id, data);
+      //text = result;
+      let payload = result.queryResult.webhookPayload;
+      this.showResponse(text, payload);
+    } else if(res[0] == 'store') {
+      text = 'Storing your data';
+      //success = storeData(userID, data);
       let payload = result.queryResult.webhookPayload;
       this.showResponse(text, payload);
     } else {
       let payload = result.queryResult.webhookPayload;
       this.showResponse(text, payload);
     }
+  }
+  //function for storing data into Firebase
+  storeData(userId, data) {
+    Firebase.database().ref('users/' + userId).set({
+      data: data
+    });
+  }
+
+  //function for reading data from Firebase
+  FBListener(userId) {
+    Firebase.database().ref('users/' + userId).on('value', (snapshot) => {
+      const data = snapshot.val().data;
+      console.log("Data retrieved: " + data);
+      return data;
+    });
   }
 
   showResponse(text, payload) {
