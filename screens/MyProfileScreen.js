@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 const styles = StyleSheet.create({
+
   container: {
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -15,11 +16,14 @@ const styles = StyleSheet.create({
 });
 
 class MyProfileScreen extends Component {
+state = { currentUser: null }
   render() {
+  const { currentUser } = this.state
     return (
       <View style={styles.container}>
         <Text style={styles.header}>
           This is where user profile will be.
+          User = {currentUser}
         </Text>
       </View>
     );
