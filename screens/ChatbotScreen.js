@@ -9,14 +9,20 @@ import {dialogflowConfig} from '../config';
 
 import Firebase from '../config/Firebase';
 
+
 const BOT_USER = {
   _id: 2,
   name: 'Glooko Buddy',
   avatar:
     'https://media.glassdoor.com/sql/1320444/glooko-squarelogo-1467383473350.png',
 };
-class ChatbotScreen extends Component {
+class ChatbotScreen extends React.Component {
   state = {
+    currentUser: null,
+    componentDidMount() {
+              const { currentUser } = Firebase.auth()
+              this.setState({ currentUser })
+    }
     messages: [
       {
         _id: 1,
@@ -172,6 +178,7 @@ class ChatbotScreen extends Component {
 }
 
   renderBubble = props => {
+    const { currentUser } = this.state
     return (
       <Bubble
         {...props}
