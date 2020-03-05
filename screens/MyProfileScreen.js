@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import Firebase from '../config/Firebase';
 
 const styles = StyleSheet.create({
 
@@ -15,10 +16,13 @@ const styles = StyleSheet.create({
   },
 });
 
-class MyProfileScreen extends Component {
-state = { currentUser: null }
-  render() {
-  const { currentUser } = this.state
+class MyProfileScreen extends React.Component {
+   state = { currentUser: null }
+   componentDidMount() {
+        const { currentUser } = Firebase.auth()
+        this.setState({ currentUser })
+   }
+   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>
