@@ -45,7 +45,7 @@ class Login extends React.Component {
         <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <Button
+        <Button style={styles.text}
           title="Don't have an account yet? Sign up"
           onPress={() => this.props.navigation.navigate('Signup')}
         />
@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingVertical: 5,
     alignItems: 'center',
-    backgroundColor: '#37c6f6',
-    borderColor: '#37c6f6',
+    backgroundColor: '#3caffa',
+    borderColor: '#3caffa',
     borderWidth: 1,
     borderRadius: 5,
     width: 200,

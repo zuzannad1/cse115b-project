@@ -18,9 +18,7 @@ class MyProfileScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>
-          This is where user profile will be.
-        </Text>
+        <Text style={styles.header}>This is where user profile will be.</Text>
       </View>
     );
   }
