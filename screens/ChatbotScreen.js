@@ -7,14 +7,22 @@ import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import {dialogflowConfig} from '../config';
 
+import Firebase from '../config/Firebase';
+
+
 const BOT_USER = {
   _id: 2,
   name: 'Glooko Buddy',
   avatar:
     'https://media.glassdoor.com/sql/1320444/glooko-squarelogo-1467383473350.png',
 };
-class ChatbotScreen extends Component {
+class ChatbotScreen extends React.Component {
   state = {
+    currentUser: null,
+    componentDidMount() {
+              const { currentUser } = Firebase.auth()
+              this.setState({ currentUser })
+    },
     messages: [
       {
         _id: 1,
@@ -75,11 +83,34 @@ class ChatbotScreen extends Component {
     );
   }
 
+  FBListener() {
+    //Firebase.database().ref('items/' + userId).on('value', (snapshot) => {
+    Firebase.database().ref('items/').on('value', (snapshot) => {
+      const data = snapshot.val().data;
+      console.log("Data retrieved: " + data);
+      return data;
+    });
+  }
+
   handleResponse(result) {
     console.log(result);
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
-    if(text == 'read') {
+    var res = text.split(" ");
+    if(res[0] == 'read') {
       text = 'Your data is:';
+      //result = FBListener(get user id, data);
+      //result = FBListener();
+      Firebase.database().ref('items/').on('value', querySnapShot => {
+      let data = querySnapShot.val() ? querySnapShot.val() : {};
+      console.log("Data retrieved: " + data);
+      });
+      text = text + data;
+      //text = result;
+      let payload = result.queryResult.webhookPayload;
+      this.showResponse(text, payload);
+    } else if(res[0] == 'store') {
+      text = 'Storing your data';
+      //success = storeData(userID, data);
       let payload = result.queryResult.webhookPayload;
       this.showResponse(text, payload);
     } else {
@@ -87,6 +118,22 @@ class ChatbotScreen extends Component {
       this.showResponse(text, payload);
     }
   }
+  //function for storing data into Firebase
+  storeData(userId, data) {
+    Firebase.database().ref('users/' + userId).set({
+      data: data
+    });
+  }
+
+  //function for reading data from Firebase
+  // FBListener() {
+  //   //Firebase.database().ref('items/' + userId).on('value', (snapshot) => {
+  //   Firebase.database().ref('items/').on('value', (snapshot) => {
+  //     const data = snapshot.val().data;
+  //     console.log("Data retrieved: " + data);
+  //     return data;
+  //   });
+  // }
 
   showResponse(text, payload) {
     let msg = {
@@ -147,6 +194,7 @@ class ChatbotScreen extends Component {
 }
 
   renderBubble = props => {
+    const { currentUser } = this.state
     return (
       <Bubble
         {...props}

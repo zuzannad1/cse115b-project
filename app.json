@@ -1,20 +1,4 @@
 {
-  "expo": {
-    "name": "GlookoBuddy",
-    "slug": "GlookoBuddy",
-    "sdkVersion": "36.0.0",
-    "version": "0.0.1",
-    "platforms": [
-      "android",
-      "ios"
-    ],
-    "entryPoint": "node_modules/expo/AppEntry.js"
-  },
-  "displayName": "GlookoBuddy",
   "name": "GlookoBuddy",
-  "android": {
-    "permissions": [
-      "RECORD_AUDIO"
-    ]
-  }
+  "displayName": "GlookoBuddy"
 }

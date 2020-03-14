@@ -1,9 +1,10 @@
 import { AppRegistry, Platform } from 'react-native';
 import App from './App';
+import {name as appName} from './app.json';
 
 AppRegistry.registerComponent('GlookoBuddy', () => App);
 
 if (Platform.OS === 'web') {
   const rootTag = document.getElementById('root') || document.getElementById('main');
-  AppRegistry.runApplication('GlookoBuddy', { rootTag });
+  AppRegistry.runApplication(appName, { rootTag });
 }

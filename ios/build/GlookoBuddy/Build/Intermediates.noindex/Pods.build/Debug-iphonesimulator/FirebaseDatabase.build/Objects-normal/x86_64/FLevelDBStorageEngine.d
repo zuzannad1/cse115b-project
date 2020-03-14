@@ -1,0 +1,23 @@
+dependencies: \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Persistence/FLevelDBStorageEngine.m \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Persistence/FLevelDBStorageEngine.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Snapshot/FCompoundWrite.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Snapshot/FNode.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Core/Utilities/FPath.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Api/Private/FTypedefs_Private.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Core/FQuerySpec.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/FIndex.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Core/FQueryParams.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Persistence/FStorageEngine.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/third_party/Wrap-leveldb/APLevelDB.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Snapshot/FEmptyNode.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Persistence/FPendingPut.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Persistence/FPruneForest.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Snapshot/FSnapshotUtilities.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Persistence/FTrackedQuery.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Utilities/FUtilities.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/Headers/Private/FirebaseCore/FIRLogger.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/Headers/Private/FirebaseCore/FIRLoggerLevel.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Utilities/FParsedUrl.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Core/FRepoInfo.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Core/FWriteRecord.h

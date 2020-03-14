@@ -2,18 +2,6 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    textAlign: 'center',
-    marginTop: 45,
-  },
-  header: {
-    fontSize: 15,
-    textAlign: 'center',
-  },
-});
 
 class EducationalContent extends Component {
   render() {
@@ -30,5 +18,18 @@ class EducationalContent extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    textAlign: 'center',
+    marginTop: 45,
+  },
+  header: {
+    fontSize: 15,
+    textAlign: 'center',
+  },
+});
 
 export default EducationalContent;

@@ -1,0 +1,21 @@
+dependencies: \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Realtime/FWebSocketConnection.m \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Constants/FConstants.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRDatabaseReference.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRDataSnapshot.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRDatabase.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRDatabaseQuery.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRDataEventType.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRMutableData.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRServerValue.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Public/FIRTransactionResult.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Api/Private/FIRDatabase_Private.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Utilities/FStringUtilities.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Realtime/FWebSocketConnection.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/third_party/SocketRocket/FSRWebSocket.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Utilities/FUtilities.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/Headers/Private/FirebaseCore/FIRLogger.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/Headers/Private/FirebaseCore/FIRLoggerLevel.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Utilities/FParsedUrl.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Core/Utilities/FPath.h \
+  /Users/kevin/Documents/CloneTests/react-native-firebase-starter/ios/Pods/FirebaseDatabase/Firebase/Database/Core/FRepoInfo.h
