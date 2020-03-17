@@ -10,7 +10,7 @@ import {
 import Firebase from '../config/Firebase';
 
 class MyProfileScreen extends React.Component {
-
+  //Method for pushing takes the state of the input and pushes to firebase with the property
    handlePush = () => {
     const {fbvalue} = this.state;
 
@@ -20,11 +20,7 @@ class MyProfileScreen extends React.Component {
    };  
    state = { currUser: Firebase.auth().currentUser.uid, 
               fbvalue: ''
-   };
-   // componentDidMount() {
-   //     const{currentUser} = Firebase.auth()
-   //     this.setState({ currentUser })
-   // }    
+   };   
    render() {
      return (
 

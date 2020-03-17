@@ -6,6 +6,7 @@ import Voice from 'react-native-voice';
 import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import {dialogflowConfig} from '../config';
+import Tts from 'react-native-tts';
 
 import Firebase from '../config/Firebase';
 
@@ -16,6 +17,7 @@ const BOT_USER = {
   avatar:
     'https://media.glassdoor.com/sql/1320444/glooko-squarelogo-1467383473350.png',
 };
+
 class ChatbotScreen extends React.Component {
   state = {
     currentUser: null,
@@ -45,6 +47,9 @@ class ChatbotScreen extends React.Component {
     super(props);
     Voice.onSpeechResults = this.onSpeechResultsfn.bind(this);
     Voice.onSpeechEnd = this.onSpeechEndfn.bind(this);
+    Tts.addEventListener('tts-start', event => console.log('start', event));
+    Tts.addEventListener('tts-finish', event => console.log('finish', event));
+    Tts.addEventListener('tts-cancel', event => console.log('cancel', event));
   }
 
   onSpeechResultsfn(e) {
@@ -151,6 +156,8 @@ class ChatbotScreen extends React.Component {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, [msg]),
     }));
+
+    Tts.speak(msg.text);  
   }
 
   _startRecognition = async () => {
