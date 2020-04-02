@@ -4,6 +4,7 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
 import Profile from './screens/MyProfileScreen';
+import Splash from './screens/Splash';
 import ChatbotScreen from './screens/ChatbotScreen';
 import ReadingsScreen from './screens/ReadingsScreen';
 import EducationalContent from './screens/EducationalContent';
@@ -20,6 +21,7 @@ const TabNavigator = createBottomTabNavigator(
         ),
       },
     },
+
     Chatbot: {
       screen: ChatbotScreen,
       navigationOptions: {
@@ -55,6 +57,7 @@ const TabNavigator = createBottomTabNavigator(
 
 const SwitchNavigator = createSwitchNavigator(
   {
+
     Login: {
       screen: Login,
     },
