@@ -20,11 +20,10 @@ const BOT_USER = {
 
 class ChatbotScreen extends React.Component {
   state = {
-    currentUser: null,
-    componentDidMount() {
-              const { currentUser } = Firebase.auth()
-              this.setState({ currentUser })
-    },
+  	BpHigh: '',
+  	BpLow: '',
+    currUser: Firebase.auth().currentUser.uid,
+
     messages: [
       {
         _id: 1,
@@ -88,13 +87,85 @@ class ChatbotScreen extends React.Component {
     );
   }
 
-  FBListener() {
-    //Firebase.database().ref('items/' + userId).on('value', (snapshot) => {
-    Firebase.database().ref('items/').on('value', (snapshot) => {
-      const data = snapshot.val().data;
-      console.log("Data retrieved: " + data);
-      return data;
-    });
+  //can currently handle
+  //"what is my highest/lowest blood pressure"
+  hanldeRead(res){
+  	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
+  		if(res[1] == 'blood'){
+	  		if(res[2] == 'pressure'){
+	  			if(res[3] == 'highest'){
+	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
+	  				var high = snapshot.child("HighestBP").val()
+	            	var low = snapshot.child("LowestBP").val();
+		            	this.setState({
+		                	BpHigh: high,
+		                	BpLow: low
+		  				})
+	            	})
+	            	return "Your highest Blood Pressure was " + this.state.BpHigh;
+	  			}else if(res[3] == 'lowest'){
+	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
+	  				var high = snapshot.child("HighestBP").val()
+	            	var low = snapshot.child("LowestBP").val();
+		            	this.setState({
+		                	BpHigh: high,
+		                	BpLow: low
+		  				})
+	            	})
+	            	return "Your lowest Blood Pressure was " + this.state.BpLow;
+	  			}
+	  		}
+	  	}
+	  	return 'Null';
+      //text = result;
+  }
+
+  //can currently handle
+  //"my blood pressure today is (number)"
+  hanldeWrite(res){
+	  	console.log(res[1]+res[2]+' '+res[3]);
+	  	if(res[1] == 'blood'){
+	  		if(res[2] == 'pressure'){
+	  			var amount = res[3];
+	  			Firebase.database().ref("/items/Analytics/").update({
+			            CurrentBP: amount
+	        		})
+	  			//sees if blood pressure if greater than highest bp or lower than lowest bp
+	  			//if it is then update the values in firebase
+	  			Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
+	  				var high = snapshot.child("HighestBP").val()
+	            	var low = snapshot.child("LowestBP").val();
+	            	this.setState({
+	                	BpHigh: high,
+	                	BpLow: low
+	  				})
+	            })
+	            if(this.state.BpHigh == 'Null'){
+	            	Firebase.database().ref("/items/Analytics/").update({
+			            HighestBP: amount
+	        		})
+	        		if(this.state.BpLow == 'Null'){
+	            	Firebase.database().ref("/items/Analytics/").update({
+			            LowestBP: amount
+	        		})
+	            }
+	            if(this.state.BpHigh < amount){
+	            	Firebase.database().ref("/items/Analytics/").update({
+			            HighestBP: amount
+	        		})	
+	            }else if(this.state.BpLow > amount){
+	            	Firebase.database().ref("/items/Analytics/").update({
+			            LowestBP: amount
+	        		})
+	            }
+			  	
+	  		}
+	  		else if(res[2] == ''){
+
+	  		}
+	  	}
+	  
+	  	return "success";
   }
 
   handleResponse(result) {
@@ -102,43 +173,23 @@ class ChatbotScreen extends React.Component {
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
     var res = text.split(" ");
     if(res[0] == 'read') {
-      text = 'Your data is:';
-      //result = FBListener(get user id, data);
-      //result = FBListener();
-      Firebase.database().ref('items/').on('value', querySnapShot => {
-      let data = querySnapShot.val() ? querySnapShot.val() : {};
-      console.log("Data retrieved: " + data);
-      });
-      text = text + data;
-      //text = result;
-      let payload = result.queryResult.webhookPayload;
-      this.showResponse(text, payload);
-    } else if(res[0] == 'store') {
-      text = 'Storing your data';
-      //success = storeData(userID, data);
-      let payload = result.queryResult.webhookPayload;
-      this.showResponse(text, payload);
+	      text = 'Your data is:';
+	      var response = this.hanldeRead(res);
+	      if(response != 'Null'){
+	      		text = response;
+	      }
+	      let payload = result.queryResult.webhookPayload;
+	      this.showResponse(text, payload);
+    } else if(res[0] == 'write') {
+	      text = 'Storing your data';
+	      var response = this.hanldeWrite(res);
+	      let payload = result.queryResult.webhookPayload;
+	      this.showResponse(text, payload);
     } else {
-      let payload = result.queryResult.webhookPayload;
-      this.showResponse(text, payload);
+	      let payload = result.queryResult.webhookPayload;
+	      this.showResponse(text, payload);
     }
   }
-  //function for storing data into Firebase
-  storeData(userId, data) {
-    Firebase.database().ref('users/' + userId).set({
-      data: data
-    });
-  }
-
-  //function for reading data from Firebase
-  // FBListener() {
-  //   //Firebase.database().ref('items/' + userId).on('value', (snapshot) => {
-  //   Firebase.database().ref('items/').on('value', (snapshot) => {
-  //     const data = snapshot.val().data;
-  //     console.log("Data retrieved: " + data);
-  //     return data;
-  //   });
-  // }
 
   showResponse(text, payload) {
     let msg = {
