@@ -99,7 +99,7 @@ class ChatbotScreen extends React.Component {
 		            	this.setState({
 		                	BpHigh: high,
 		  				})
-	            	})
+	            	});
 	            	return "Your highest Blood Pressure was " + this.state.BpHigh;
 	  			}else if(res[3] == 'lowest'){
 	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
@@ -107,7 +107,7 @@ class ChatbotScreen extends React.Component {
 		            	this.setState({
 		                	BpLow: low
 		  				})
-	            	})
+	            	});
 	            	return "Your lowest Blood Pressure was " + this.state.BpLow;
 	  			}
 	  		}
