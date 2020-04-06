@@ -96,19 +96,15 @@ class ChatbotScreen extends React.Component {
 	  			if(res[3] == 'highest'){
 	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
-	            	var low = snapshot.child("LowestBP").val();
 		            	this.setState({
 		                	BpHigh: high,
-		                	BpLow: low
 		  				})
 	            	})
 	            	return "Your highest Blood Pressure was " + this.state.BpHigh;
 	  			}else if(res[3] == 'lowest'){
 	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
-	  				var high = snapshot.child("HighestBP").val()
 	            	var low = snapshot.child("LowestBP").val();
 		            	this.setState({
-		                	BpHigh: high,
 		                	BpLow: low
 		  				})
 	            	})
@@ -145,9 +141,10 @@ class ChatbotScreen extends React.Component {
 			            HighestBP: amount
 	        		})
 	        		if(this.state.BpLow == 'Null'){
-	            	Firebase.database().ref("/items/Analytics/").update({
-			            LowestBP: amount
-	        		})
+		            	Firebase.database().ref("/items/Analytics/").update({
+				            LowestBP: amount
+		        		})
+	            	}
 	            }
 	            if(this.state.BpHigh < amount){
 	            	Firebase.database().ref("/items/Analytics/").update({
