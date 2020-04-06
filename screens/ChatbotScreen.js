@@ -125,7 +125,7 @@ class ChatbotScreen extends React.Component {
 	  			var amount = res[3];
 	  			Firebase.database().ref("/items/Analytics/").update({
 			            CurrentBP: amount
-	        		})
+	        		});
 	  			//sees if blood pressure if greater than highest bp or lower than lowest bp
 	  			//if it is then update the values in firebase
 	  			Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
@@ -135,25 +135,25 @@ class ChatbotScreen extends React.Component {
 	                	BpHigh: high,
 	                	BpLow: low
 	  				})
-	            })
+	            });
 	            if(this.state.BpHigh == 'Null'){
 	            	Firebase.database().ref("/items/Analytics/").update({
 			            HighestBP: amount
-	        		})
+	        		});
 	        		if(this.state.BpLow == 'Null'){
 		            	Firebase.database().ref("/items/Analytics/").update({
 				            LowestBP: amount
-		        		})
+		        		});
 	            	}
 	            }
 	            if(this.state.BpHigh < amount){
 	            	Firebase.database().ref("/items/Analytics/").update({
 			            HighestBP: amount
-	        		})	
+	        		});
 	            }else if(this.state.BpLow > amount){
 	            	Firebase.database().ref("/items/Analytics/").update({
 			            LowestBP: amount
-	        		})
+	        		});
 	            }
 			  	
 	  		}
