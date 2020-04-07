@@ -90,19 +90,24 @@ class ChatbotScreen extends React.Component {
   //can currently handle
   //"what is my highest/lowest blood pressure"
   hanldeRead(res){
+    console.log("Read reached 0++++++++++++++++++++++");
   	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
   		if(res[1] == 'blood'){
+        console.log("Read reached 1+++++++++++++++++++++");
 	  		if(res[2] == 'pressure'){
+          console.log("Read reached 2+++++++++++++++++++");
 	  			if(res[3] == 'Highest'){
-	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
+            console.log("Read reached 01++++++++++++++++++++");
+	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
 		            	this.setState({
 		                	BpHigh: high,
 		  				})
 	            	});
+            console.log("Read reached 02+++++++++++++++++++++++");
 	            	return "Your highest Blood Pressure was " + this.state.BpHigh;
 	  			}else if(res[3] == 'lowest'){
-	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
+	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	            	var low = snapshot.child("LowestBP").val();
 		            	this.setState({
 		                	BpLow: low
@@ -167,6 +172,7 @@ class ChatbotScreen extends React.Component {
 
   handleResponse(result) {
     console.log(result);
+    console.log("Response reached");
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
     var res = text.split(" ");
     if(res[0] == 'Read') {
