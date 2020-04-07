@@ -93,7 +93,7 @@ class ChatbotScreen extends React.Component {
   	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
   		if(res[1] == 'blood'){
 	  		if(res[2] == 'pressure'){
-	  			if(res[3] == 'highest'){
+	  			if(res[3] == 'Highest'){
 	  				Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
 		            	this.setState({
@@ -169,7 +169,7 @@ class ChatbotScreen extends React.Component {
     console.log(result);
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
     var res = text.split(" ");
-    if(res[0] == 'read') {
+    if(res[0] == 'Read') {
 	      text = 'Your data is:';
 	      var response = this.hanldeRead(res);
 	      if(response != 'Null'){
