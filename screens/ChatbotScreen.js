@@ -89,6 +89,7 @@ class ChatbotScreen extends React.Component {
 
   //can currently handle
   //"what is my highest/lowest blood pressure"
+  //returns either a response or Null
   hanldeRead(res){
     console.log("Read reached 0++++++++++++++++++++++");
   	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
@@ -123,17 +124,18 @@ class ChatbotScreen extends React.Component {
 
   //can currently handle
   //"my blood pressure today is (number)"
+  //returns either success or Null
   hanldeWrite(res){
 	  	console.log(res[1]+res[2]+' '+res[3]);
 	  	if(res[1] == 'blood'){
 	  		if(res[2] == 'pressure'){
 	  			var amount = res[3];
-	  			Firebase.database().ref("/items/Analytics/").update({
+	  			Firebase.database().ref("/data/Analytics/").update({
 			            CurrentBP: amount
 	        		});
 	  			//sees if blood pressure if greater than highest bp or lower than lowest bp
 	  			//if it is then update the values in firebase
-	  			Firebase.database().ref("/items/Analytics/").once('value', snapshot => {
+	  			Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
 	            	var low = snapshot.child("LowestBP").val();
 	            	this.setState({
@@ -142,32 +144,34 @@ class ChatbotScreen extends React.Component {
 	  				})
 	            });
 	            if(this.state.BpHigh == 'Null'){
-	            	Firebase.database().ref("/items/Analytics/").update({
+	            	Firebase.database().ref("/data/Analytics/").update({
 			            HighestBP: amount
 	        		});
 	        		if(this.state.BpLow == 'Null'){
-		            	Firebase.database().ref("/items/Analytics/").update({
+		            	Firebase.database().ref("/data/Analytics/").update({
 				            LowestBP: amount
 		        		});
 	            	}
 	            }
 	            if(this.state.BpHigh < amount){
-	            	Firebase.database().ref("/items/Analytics/").update({
+	            	Firebase.database().ref("/data/Analytics/").update({
 			            HighestBP: amount
 	        		});
 	            }else if(this.state.BpLow > amount){
-	            	Firebase.database().ref("/items/Analytics/").update({
+	            	Firebase.database().ref("/data/Analytics/").update({
 			            LowestBP: amount
 	        		});
 	            }
+	            return "success";
 			  	
 	  		}
 	  		else if(res[2] == ''){
 
 	  		}
+
 	  	}
 	  
-	  	return "success";
+	  	return "Null";
   }
 
   handleResponse(result) {
@@ -176,7 +180,7 @@ class ChatbotScreen extends React.Component {
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
     var res = text.split(" ");
     if(res[0] == 'Read') {
-	      text = 'Your data is:';
+	      text = 'Could not retreive your data sorry';
 	      var response = this.hanldeRead(res);
 	      if(response != 'Null'){
 	      		text = response;
@@ -186,6 +190,9 @@ class ChatbotScreen extends React.Component {
     } else if(res[0] == 'write') {
 	      text = 'Storing your data';
 	      var response = this.hanldeWrite(res);
+	      if(response != 'success'){
+	      		text = "Could not store your data sorry";
+	      }
 	      let payload = result.queryResult.webhookPayload;
 	      this.showResponse(text, payload);
     } else {
