@@ -97,7 +97,7 @@ class ChatbotScreen extends React.Component {
         console.log("Read reached 1+++++++++++++++++++++");
 	  		if(res[2] == 'pressure'){
           console.log("Read reached 2+++++++++++++++++++");
-	  			if(res[3] == 'Highest'){
+	  			if(res[3] == 'highest'){
             console.log("Read reached 01++++++++++++++++++++");
 	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
