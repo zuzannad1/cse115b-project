@@ -1,6 +1,7 @@
 import React from 'react';
 import Firebase from '../config/Firebase';
 import {
+  Image,
   View,
   TextInput,
   StyleSheet,
@@ -25,42 +26,80 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.inputBox}
-          value={this.state.name}
-          onChangeText={name => this.setState({name})}
-          placeholder="Full Name"
-        />
-        <TextInput
-          style={styles.inputBox}
-          value={this.state.email}
-          onChangeText={email => this.setState({email})}
-          placeholder="Email"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputBox}
-          value={this.state.password}
-          onChangeText={password => this.setState({password})}
-          placeholder="Password"
-          secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-          <Text style={styles.buttonText}>Signup</Text>
-        </TouchableOpacity>
-        <Button
-          title="Already have an account? Log in"
-          onPress={() => this.props.navigation.navigate('Login')}
-        />
+      <View style={styles.foundation}>
+        <View style={styles.buttonSpace}/>
+        <View style={styles.header}>
+          <Image
+            style={styles.image}
+            source={require('../assets/Text/register.png')}
+          />
+        </View>
+
+        <View style={styles.container}>
+
+          <View style={styles.buttonSpace} />
+
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.name}
+            onChangeText={name => this.setState({name})}
+            placeholder="Full Name"
+          />
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.email}
+            onChangeText={email => this.setState({email})}
+            placeholder="Email"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.password}
+            onChangeText={password => this.setState({password})}
+            placeholder="Password"
+            secureTextEntry={true}
+          />
+
+
+          <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
+            <Text style={styles.buttonText}>Signup</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} 
+           onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>Take me back!</Text>
+          </TouchableOpacity>
+
+          <View style={styles.buttonSpace} />
+
+        </View>
+        <View style={styles.footer}/>
       </View>
     );
   }
-}
+} //
 
 const styles = StyleSheet.create({
-  container: {
+
+  foundation: {
+    flex:1,
+    backgroundColor:"#fff", 
+  },
+
+  header: {
     flex: 1,
+    alignItems:'center',
+    justifyContent:'center',
+  },
+
+  footer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  container: {
+    flex: 1.5,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -74,13 +113,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     textAlign: 'center',
   },
-  button: {
+  buttonSpace: {
     marginTop: 30,
-    marginBottom: 20,
+    marginBottom: 10,
+  },
+  button: {
+    marginTop: 10,
+    marginBottom: 10,
     paddingVertical: 5,
     alignItems: 'center',
-    backgroundColor: '#37c6f6',
-    borderColor: '#37c6f6',
+    backgroundColor: '#3caffa',
+    borderColor: '#3caffa',
     borderWidth: 1,
     borderRadius: 5,
     width: 200,
@@ -92,6 +135,13 @@ const styles = StyleSheet.create({
   },
   buttonSignup: {
     fontSize: 12,
+  },
+  buttonBack: {
+    fontSize: 12,
+  },
+  image: {
+    flex:1, 
+    aspectRatio: 2.3,
   },
 });
 

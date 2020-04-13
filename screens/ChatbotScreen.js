@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 
-import {StyleSheet, Button, TouchableHighlight} from 'react-native';
+import {StyleSheet, Button} from 'react-native';
 import Voice from 'react-native-voice';
 import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
@@ -9,6 +9,7 @@ import {dialogflowConfig} from '../config';
 import Tts from 'react-native-tts';
 
 import Firebase from '../config/Firebase';
+
 
 
 const BOT_USER = {
@@ -61,7 +62,7 @@ class ChatbotScreen extends React.Component {
   onSpeechEndfn(e) {
     this._addVoiceMsg(this.state.results);
   }
-   componentWillnmount() {
+  componentWillnmount() {
     Voice.destroy().then(Voice.removeAllListeners);
   }
 
@@ -195,11 +196,12 @@ class ChatbotScreen extends React.Component {
 	      }
 	      let payload = result.queryResult.webhookPayload;
 	      this.showResponse(text, payload);
-    } else {
-	      let payload = result.queryResult.webhookPayload;
-	      this.showResponse(text, payload);
     }
-  }
+    else {
+        let payload = result.queryResult.webhookPayload;
+        this.showResponse(text, payload);
+    }
+}
 
   showResponse(text, payload) {
     let msg = {
@@ -240,26 +242,24 @@ class ChatbotScreen extends React.Component {
     }
   };
 
- _addVoiceMsg = reses => {
-  console.log('addingVoiceMsg')
-  let res = reses[0];
-  let count = {
-    _id: this.state.messages.length + 1,
-    text: res,
-    createdAt: new Date(),
-    user: {_id: 1,}
-  };
-  this.setState(previousState => ({
-    messages: GiftedChat.append(previousState.messages, [count]),
-   }));
-   Dialogflow_V2.requestQuery(
+  _addVoiceMsg = reses => {
+    console.log('addingVoiceMsg');
+    let res = reses[0];
+    let count = {
+      _id: this.state.messages.length + 1,
+      text: res,
+      createdAt: new Date(),
+      user: {_id: 1},
+    };
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, [count]),
+    }));
+    Dialogflow_V2.requestQuery(
       res,
       result => this.handleResponse(result),
       error => console.log(error),
     );
-
-  
-}
+  };
 
   renderBubble = props => {
     const { currentUser } = this.state
@@ -276,10 +276,10 @@ class ChatbotScreen extends React.Component {
         }}
         wrapperStyle={{
           right: {
-            backgroundColor: '#C6A8F1',
+            backgroundColor: 'rgba(61,180,255,0.67)',
           },
           left: {
-            backgroundColor: '#7fc8f1',
+            backgroundColor: '#3caffa',
           },
         }}
       />
@@ -296,10 +296,8 @@ class ChatbotScreen extends React.Component {
           }}
           renderBubble={this.renderBubble}
         />
-        <Button onPress = {this._startRecognition} title='Start'>
-       </Button>
-       <Button onPress = {this._stopRecognition} title='End'>
-       </Button>
+        <Button onPress={this._startRecognition} title="Begin Dictation 🎤" />
+        <Button onPress={this._stopRecognition} title="End Dictation 🚫" />
       </View>
     );
   }
