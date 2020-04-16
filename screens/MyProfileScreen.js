@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
-<<<<<<< HEAD
+import {StyleSheet, Text, View} from 'react-native';
 import {
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Button,
+  Image,
+  TouchableOpacity
 } from 'react-native';
-import Firebase from '../config/Firebase';
+// Gotten from bootdey.com/react-native-snippet/23/Profile-ui-example
+
 
 
 class MyProfileScreen extends Component {
@@ -142,4 +139,5 @@ const styles = StyleSheet.create({
 
 
 });
+
 export default MyProfileScreen;
