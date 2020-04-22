@@ -24,7 +24,6 @@ class ChatbotScreen extends React.Component {
   	BpHigh: '',
   	BpLow: '',
     currUser: Firebase.auth().currentUser.uid,
-
     messages: [
       {
         _id: 1,
@@ -92,21 +91,16 @@ class ChatbotScreen extends React.Component {
   //"what is my highest/lowest blood pressure"
   //returns either a response or Null
   hanldeRead(res){
-    console.log("Read reached 0++++++++++++++++++++++");
   	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
   		if(res[1] == 'blood'){
-        console.log("Read reached 1+++++++++++++++++++++");
 	  		if(res[2] == 'pressure'){
-          console.log("Read reached 2+++++++++++++++++++");
 	  			if(res[3] == 'highest'){
-            console.log("Read reached 01++++++++++++++++++++");
 	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
 		            	this.setState({
 		                	BpHigh: high,
 		  				})
 	            	});
-            console.log("Read reached 02+++++++++++++++++++++++");
 	            	return "Your highest Blood Pressure was " + this.state.BpHigh;
 	  			}else if(res[3] == 'lowest'){
 	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
@@ -222,6 +216,7 @@ class ChatbotScreen extends React.Component {
 
     Tts.speak(msg.text);  
   }
+
 
   _startRecognition = async () => {
     this.setState({
