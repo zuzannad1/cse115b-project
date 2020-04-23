@@ -23,6 +23,10 @@ class ChatbotScreen extends React.Component {
   state = {
   	BpHigh: '',
   	BpLow: '',
+  	BgHigh: '',
+  	BgLow: '',
+  	BgHighdate: '',
+  	BgLowdate: '',
     currUser: Firebase.auth().currentUser.uid,
     messages: [
       {
@@ -86,9 +90,48 @@ class ChatbotScreen extends React.Component {
       error => console.log(error),
     );
   }
+  handleWriteBG(BGamount){
+  		currDate = new Date();
+	  	Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
+			var high = snapshot.child("HighestBG").val()
+			var low = snapshot.child("LowestBG").val()
+			this.setState({
+		    	BgHigh: high,
+		    	BgLow: low
+				})
+			});
+	  	Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/BloodGlucoseLog/").push({
+	      currDate: BGamount,
+	    });
+		if(this.state.BgHigh == 'Null'){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        HighestBG: amount,
+		        HighestBGdate: currDate
+			});
+		}
+		if(this.state.BgLow == 'Null'){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        LowestBG: amount,
+		        LowestBGdate: currDate
+			});
+		}
+		if(this.state.BgHigh < amount){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        HighestBG: amount,
+		        HighestBGdate: currDate
+			});
+		}else if(this.state.BgLow > amount){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        LowestBG: amount,
+		        LowestBGdate: currDate
+			});
+		}
+  		return 'success';
+  }
 
   //can currently handle
   //"what is my highest/lowest blood pressure"
+  //"what is my highest/lowest blood glucose"
   //returns either a response or Null
   hanldeRead(res){
   	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
@@ -111,6 +154,28 @@ class ChatbotScreen extends React.Component {
 	            	});
 	            	return "Your lowest Blood Pressure was " + this.state.BpLow;
 	  			}
+	  		}else if(res[2] == 'glucose'){
+	  			if(res[3] == 'highest'){
+		  			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+		  				var high = snapshot.child("HighestBG").val()
+		  				var highdate = snapshot.child("HighestBGdate").val()
+			            	this.setState({
+			                	BgHigh: high,
+                        BgHighdate: highdate
+			  				})
+		            	});
+		            	return "Your highest Blood Glucose was " + this.state.BgHigh + " on " + BgHighdate;
+	  			}else if(res[3] == 'lowest'){
+	  				Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+	            	var low = snapshot.child("LowestBG").val();
+	            	var lowdate = snapshot.child("LowestBGdate").val();
+		            	this.setState({
+		                	BgLow: low,
+		                	BgLowdate : lowdate
+		  				})
+	            	});
+	            	return "Your lowest Blood Glucose was " + this.state.BgLow + " on " + BgLowdate;
+	  			}
 	  		}
 	  	}
 	  	return 'Null';
@@ -132,7 +197,7 @@ class ChatbotScreen extends React.Component {
 	  			//if it is then update the values in firebase
 	  			Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
-	            	var low = snapshot.child("LowestBP").val();
+	            	var low = snapshot.child("LowestBP").val()
 	            	this.setState({
 	                	BpHigh: high,
 	                	BpLow: low
@@ -142,12 +207,12 @@ class ChatbotScreen extends React.Component {
 	            	Firebase.database().ref("/data/Analytics/").update({
 			            HighestBP: amount
 	        		});
-	        		if(this.state.BpLow == 'Null'){
-		            	Firebase.database().ref("/data/Analytics/").update({
-				            LowestBP: amount
-		        		});
-	            	}
-	            }
+	        	}
+	        	if(this.state.BpLow == 'Null'){
+	            	Firebase.database().ref("/data/Analytics/").update({
+			            LowestBP: amount
+	        		});
+            	}
 	            if(this.state.BpHigh < amount){
 	            	Firebase.database().ref("/data/Analytics/").update({
 			            HighestBP: amount
@@ -160,8 +225,13 @@ class ChatbotScreen extends React.Component {
 	            return "success";
 			  	
 	  		}
-	  		else if(res[2] == ''){
-
+	  		else if(res[2] == 'glucose'){
+	  			var amount = res[3];
+	  			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+			            CurrentBG: amount
+	        		});
+	  			result = handleWriteBG(amount);
+	  			return result;
 	  		}
 
 	  	}
