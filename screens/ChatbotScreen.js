@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 
-import {StyleSheet, Button, TouchableHighlight} from 'react-native';
+import {StyleSheet, Button} from 'react-native';
 import Voice from 'react-native-voice';
 import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
@@ -9,6 +9,7 @@ import {dialogflowConfig} from '../config';
 import Tts from 'react-native-tts';
 
 import Firebase from '../config/Firebase';
+
 
 
 const BOT_USER = {
@@ -22,8 +23,11 @@ class ChatbotScreen extends React.Component {
   state = {
   	BpHigh: '',
   	BpLow: '',
+  	BgHigh: '',
+  	BgLow: '',
+  	BgHighdate: '',
+  	BgLowdate: '',
     currUser: Firebase.auth().currentUser.uid,
-
     messages: [
       {
         _id: 1,
@@ -61,7 +65,7 @@ class ChatbotScreen extends React.Component {
   onSpeechEndfn(e) {
     this._addVoiceMsg(this.state.results);
   }
-   componentWillnmount() {
+  componentWillnmount() {
     Voice.destroy().then(Voice.removeAllListeners);
   }
 
@@ -86,26 +90,60 @@ class ChatbotScreen extends React.Component {
       error => console.log(error),
     );
   }
+  handleWriteBG(BGamount){
+  		currDate = new Date();
+	  	Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
+			var high = snapshot.child("HighestBG").val()
+			var low = snapshot.child("LowestBG").val()
+			this.setState({
+		    	BgHigh: high,
+		    	BgLow: low
+				})
+			});
+	  	Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/BloodGlucoseLog/").push({
+	      currDate: BGamount,
+	    });
+		if(this.state.BgHigh == 'Null'){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        HighestBG: amount,
+		        HighestBGdate: currDate
+			});
+		}
+		if(this.state.BgLow == 'Null'){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        LowestBG: amount,
+		        LowestBGdate: currDate
+			});
+		}
+		if(this.state.BgHigh < amount){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        HighestBG: amount,
+		        HighestBGdate: currDate
+			});
+		}else if(this.state.BgLow > amount){
+			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+		        LowestBG: amount,
+		        LowestBGdate: currDate
+			});
+		}
+  		return 'success';
+  }
 
   //can currently handle
   //"what is my highest/lowest blood pressure"
+  //"what is my highest/lowest blood glucose"
   //returns either a response or Null
   hanldeRead(res){
-    console.log("Read reached 0++++++++++++++++++++++");
   	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
   		if(res[1] == 'blood'){
-        console.log("Read reached 1+++++++++++++++++++++");
 	  		if(res[2] == 'pressure'){
-          console.log("Read reached 2+++++++++++++++++++");
 	  			if(res[3] == 'highest'){
-            console.log("Read reached 01++++++++++++++++++++");
 	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
 		            	this.setState({
 		                	BpHigh: high,
 		  				})
 	            	});
-            console.log("Read reached 02+++++++++++++++++++++++");
 	            	return "Your highest Blood Pressure was " + this.state.BpHigh;
 	  			}else if(res[3] == 'lowest'){
 	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
@@ -115,6 +153,27 @@ class ChatbotScreen extends React.Component {
 		  				})
 	            	});
 	            	return "Your lowest Blood Pressure was " + this.state.BpLow;
+	  			}
+	  		}else if(res[2] == 'glucose'){
+	  			if(res[3] == 'highest'){
+		  			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+		  				var high = snapshot.child("HighestBG").val()
+		  				var highdate = snapshot.child("HighestBGdate").val()
+			            	this.setState({
+			                	BgHigh: high,
+			  				})
+		            	});
+		            	return "Your highest Blood Glucose was " + this.state.BgHigh + " on " + BgHighdate;
+	  			}else if(res[3] == 'lowest'){
+	  				Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+	            	var low = snapshot.child("LowestBG").val();
+	            	var lowdate = snapshot.child("LowestBGdate").val();
+		            	this.setState({
+		                	BgLow: low,
+		                	BgLowdate : lowdate
+		  				})
+	            	});
+	            	return "Your lowest Blood Glucose was " + this.state.BgLow + " on " + BgLowdate;
 	  			}
 	  		}
 	  	}
@@ -137,7 +196,7 @@ class ChatbotScreen extends React.Component {
 	  			//if it is then update the values in firebase
 	  			Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
 	  				var high = snapshot.child("HighestBP").val()
-	            	var low = snapshot.child("LowestBP").val();
+	            	var low = snapshot.child("LowestBP").val()
 	            	this.setState({
 	                	BpHigh: high,
 	                	BpLow: low
@@ -147,12 +206,12 @@ class ChatbotScreen extends React.Component {
 	            	Firebase.database().ref("/data/Analytics/").update({
 			            HighestBP: amount
 	        		});
-	        		if(this.state.BpLow == 'Null'){
-		            	Firebase.database().ref("/data/Analytics/").update({
-				            LowestBP: amount
-		        		});
-	            	}
-	            }
+	        	}
+	        	if(this.state.BpLow == 'Null'){
+	            	Firebase.database().ref("/data/Analytics/").update({
+			            LowestBP: amount
+	        		});
+            	}
 	            if(this.state.BpHigh < amount){
 	            	Firebase.database().ref("/data/Analytics/").update({
 			            HighestBP: amount
@@ -165,8 +224,13 @@ class ChatbotScreen extends React.Component {
 	            return "success";
 			  	
 	  		}
-	  		else if(res[2] == ''){
-
+	  		else if(res[2] == 'glucose'){
+	  			var amount = res[3];
+	  			Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+			            CurrentBG: amount
+	        		});
+	  			result = handleWriteBG(amount);
+	  			return result;
 	  		}
 
 	  	}
@@ -195,11 +259,12 @@ class ChatbotScreen extends React.Component {
 	      }
 	      let payload = result.queryResult.webhookPayload;
 	      this.showResponse(text, payload);
-    } else {
-	      let payload = result.queryResult.webhookPayload;
-	      this.showResponse(text, payload);
     }
-  }
+    else {
+        let payload = result.queryResult.webhookPayload;
+        this.showResponse(text, payload);
+    }
+}
 
   showResponse(text, payload) {
     let msg = {
@@ -221,6 +286,7 @@ class ChatbotScreen extends React.Component {
     Tts.speak(msg.text);  
   }
 
+
   _startRecognition = async () => {
     this.setState({
       results: [],
@@ -240,26 +306,24 @@ class ChatbotScreen extends React.Component {
     }
   };
 
- _addVoiceMsg = reses => {
-  console.log('addingVoiceMsg')
-  let res = reses[0];
-  let count = {
-    _id: this.state.messages.length + 1,
-    text: res,
-    createdAt: new Date(),
-    user: {_id: 1,}
-  };
-  this.setState(previousState => ({
-    messages: GiftedChat.append(previousState.messages, [count]),
-   }));
-   Dialogflow_V2.requestQuery(
+  _addVoiceMsg = reses => {
+    console.log('addingVoiceMsg');
+    let res = reses[0];
+    let count = {
+      _id: this.state.messages.length + 1,
+      text: res,
+      createdAt: new Date(),
+      user: {_id: 1},
+    };
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, [count]),
+    }));
+    Dialogflow_V2.requestQuery(
       res,
       result => this.handleResponse(result),
       error => console.log(error),
     );
-
-  
-}
+  };
 
   renderBubble = props => {
     const { currentUser } = this.state
@@ -276,10 +340,10 @@ class ChatbotScreen extends React.Component {
         }}
         wrapperStyle={{
           right: {
-            backgroundColor: '#C6A8F1',
+            backgroundColor: 'rgba(61,180,255,0.67)',
           },
           left: {
-            backgroundColor: '#7fc8f1',
+            backgroundColor: '#3caffa',
           },
         }}
       />
@@ -296,10 +360,8 @@ class ChatbotScreen extends React.Component {
           }}
           renderBubble={this.renderBubble}
         />
-        <Button onPress = {this._startRecognition} title='Start'>
-       </Button>
-       <Button onPress = {this._stopRecognition} title='End'>
-       </Button>
+        <Button onPress={this._startRecognition} title="Begin Dictation 🎤" />
+        <Button onPress={this._stopRecognition} title="End Dictation 🚫" />
       </View>
     );
   }
