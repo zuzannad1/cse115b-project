@@ -21,8 +21,12 @@ const BOT_USER = {
 
 class ChatbotScreen extends React.Component {
   state = {
-  	BpHigh: '',
-  	BpLow: '',
+    BpHigh: '',
+    BpLow: '',
+    BgHigh: '',
+    BgLow: '',
+    BgHighdate: '',
+    BgLowdate: '',
     currUser: Firebase.auth().currentUser.uid,
     messages: [
       {
@@ -86,34 +90,94 @@ class ChatbotScreen extends React.Component {
       error => console.log(error),
     );
   }
+  handleWriteBG(BGamount){
+      currDate = new Date();
+      Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
+      var high = snapshot.child("HighestBG").val()
+      var low = snapshot.child("LowestBG").val()
+      this.setState({
+          BgHigh: high,
+          BgLow: low
+        })
+      });
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/BloodGlucoseLog/").push({
+        currDate: BGamount,
+      });
+    if(this.state.BgHigh == 'Null'){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            HighestBG: amount,
+            HighestBGdate: currDate
+      });
+    }
+    if(this.state.BgLow == 'Null'){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            LowestBG: amount,
+            LowestBGdate: currDate
+      });
+    }
+    if(this.state.BgHigh < amount){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            HighestBG: amount,
+            HighestBGdate: currDate
+      });
+    }else if(this.state.BgLow > amount){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            LowestBG: amount,
+            LowestBGdate: currDate
+      });
+    }
+      return 'success';
+  }
 
   //can currently handle
   //"what is my highest/lowest blood pressure"
+  //"what is my highest/lowest blood glucose"
   //returns either a response or Null
   hanldeRead(res){
-  	//Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
-  		if(res[1] == 'blood'){
-	  		if(res[2] == 'pressure'){
-	  			if(res[3] == 'highest'){
-	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
-	  				var high = snapshot.child("HighestBP").val()
-		            	this.setState({
-		                	BpHigh: high,
-		  				})
-	            	});
-	            	return "Your highest Blood Pressure was " + this.state.BpHigh;
-	  			}else if(res[3] == 'lowest'){
-	  				Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
-	            	var low = snapshot.child("LowestBP").val();
-		            	this.setState({
-		                	BpLow: low
-		  				})
-	            	});
-	            	return "Your lowest Blood Pressure was " + this.state.BpLow;
-	  			}
-	  		}
-	  	}
-	  	return 'Null';
+    //Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
+      if(res[1] == 'blood'){
+        if(res[2] == 'pressure'){
+          if(res[3] == 'highest'){
+            Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
+            var high = snapshot.child("HighestBP").val()
+                  this.setState({
+                      BpHigh: high,
+              })
+                });
+                return "Your highest Blood Pressure was " + this.state.BpHigh;
+          }else if(res[3] == 'lowest'){
+            Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
+                var low = snapshot.child("LowestBP").val();
+                  this.setState({
+                      BpLow: low
+              })
+                });
+                return "Your lowest Blood Pressure was " + this.state.BpLow;
+          }
+        }else if(res[2] == 'glucose'){
+          if(res[3] == 'highest'){
+            Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+              var high = snapshot.child("HighestBG").val()
+              var highdate = snapshot.child("HighestBGdate").val()
+                    this.setState({
+                        BgHigh: high,
+                })
+                  });
+                  return "Your highest Blood Glucose was " + this.state.BgHigh + " on " + BgHighdate;
+          }else if(res[3] == 'lowest'){
+            Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+                var low = snapshot.child("LowestBG").val();
+                var lowdate = snapshot.child("LowestBGdate").val();
+                  this.setState({
+                      BgLow: low,
+                      BgLowdate : lowdate
+              })
+                });
+                return "Your lowest Blood Glucose was " + this.state.BgLow + " on " + BgLowdate;
+          }
+        }
+      }
+      return 'Null';
       //text = result;
   }
 
@@ -121,52 +185,57 @@ class ChatbotScreen extends React.Component {
   //"my blood pressure today is (number)"
   //returns either success or Null
   hanldeWrite(res){
-	  	console.log(res[1]+res[2]+' '+res[3]);
-	  	if(res[1] == 'blood'){
-	  		if(res[2] == 'pressure'){
-	  			var amount = res[3];
-	  			Firebase.database().ref("/data/Analytics/").update({
-			            CurrentBP: amount
-	        		});
-	  			//sees if blood pressure if greater than highest bp or lower than lowest bp
-	  			//if it is then update the values in firebase
-	  			Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
-	  				var high = snapshot.child("HighestBP").val()
-	            	var low = snapshot.child("LowestBP").val();
-	            	this.setState({
-	                	BpHigh: high,
-	                	BpLow: low
-	  				})
-	            });
-	            if(this.state.BpHigh == 'Null'){
-	            	Firebase.database().ref("/data/Analytics/").update({
-			            HighestBP: amount
-	        		});
-	        		if(this.state.BpLow == 'Null'){
-		            	Firebase.database().ref("/data/Analytics/").update({
-				            LowestBP: amount
-		        		});
-	            	}
-	            }
-	            if(this.state.BpHigh < amount){
-	            	Firebase.database().ref("/data/Analytics/").update({
-			            HighestBP: amount
-	        		});
-	            }else if(this.state.BpLow > amount){
-	            	Firebase.database().ref("/data/Analytics/").update({
-			            LowestBP: amount
-	        		});
-	            }
-	            return "success";
-			  	
-	  		}
-	  		else if(res[2] == ''){
+      console.log(res[1]+res[2]+' '+res[3]);
+      if(res[1] == 'blood'){
+        if(res[2] == 'pressure'){
+          var amount = res[3];
+          Firebase.database().ref("/data/Analytics/").update({
+                  CurrentBP: amount
+              });
+          //sees if blood pressure if greater than highest bp or lower than lowest bp
+          //if it is then update the values in firebase
+          Firebase.database().ref("/data/Analytics/").once('value', snapshot => {
+            var high = snapshot.child("HighestBP").val()
+                var low = snapshot.child("LowestBP").val()
+                this.setState({
+                    BpHigh: high,
+                    BpLow: low
+            })
+              });
+              if(this.state.BpHigh == 'Null'){
+                Firebase.database().ref("/data/Analytics/").update({
+                  HighestBP: amount
+              });
+            }
+            if(this.state.BpLow == 'Null'){
+                Firebase.database().ref("/data/Analytics/").update({
+                  LowestBP: amount
+              });
+              }
+              if(this.state.BpHigh < amount){
+                Firebase.database().ref("/data/Analytics/").update({
+                  HighestBP: amount
+              });
+              }else if(this.state.BpLow > amount){
+                Firebase.database().ref("/data/Analytics/").update({
+                  LowestBP: amount
+              });
+              }
+              return "success";
+          
+        }
+        else if(res[2] == 'glucose'){
+          var amount = res[3];
+          Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+                  CurrentBG: amount
+              });
+          result = handleWriteBG(amount);
+          return result;
+        }
 
-	  		}
-
-	  	}
-	  
-	  	return "Null";
+      }
+    
+      return "Null";
   }
 
   handleResponse(result) {
@@ -175,21 +244,21 @@ class ChatbotScreen extends React.Component {
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
     var res = text.split(" ");
     if(res[0] == 'Read') {
-	      text = 'Could not retreive your data sorry';
-	      var response = this.hanldeRead(res);
-	      if(response != 'Null'){
-	      		text = response;
-	      }
-	      let payload = result.queryResult.webhookPayload;
-	      this.showResponse(text, payload);
+        text = 'Could not retreive your data sorry';
+        var response = this.hanldeRead(res);
+        if(response != 'Null'){
+            text = response;
+        }
+        let payload = result.queryResult.webhookPayload;
+        this.showResponse(text, payload);
     } else if(res[0] == 'write') {
-	      text = 'Storing your data';
-	      var response = this.hanldeWrite(res);
-	      if(response != 'success'){
-	      		text = "Could not store your data sorry";
-	      }
-	      let payload = result.queryResult.webhookPayload;
-	      this.showResponse(text, payload);
+        text = 'Storing your data';
+        var response = this.hanldeWrite(res);
+        if(response != 'success'){
+            text = "Could not store your data sorry";
+        }
+        let payload = result.queryResult.webhookPayload;
+        this.showResponse(text, payload);
     }
     else {
         let payload = result.queryResult.webhookPayload;
