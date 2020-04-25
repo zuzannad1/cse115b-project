@@ -44,14 +44,30 @@ class ChatbotScreen extends React.Component {
     results: [],
   };
 
-  constructor(props) {
+   UNSAFE_componentWillMount(){
+    Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+              var high = snapshot.child("HighestBG").val()
+              var highdate = snapshot.child("HighestBGdate").val()
+              var low = snapshot.child("LowestBG").val()
+                var lowdate = snapshot.child("LowestBGdate").val()
+                    this.setState({
+                        BgHigh: high,
+                        BgHighdate: highdate,
+                        BgLow: low,
+                        BgLowdate: lowdate
+                })
+                  });
+
+  }
+
+ constructor(props) {
     super(props);
     Voice.onSpeechResults = this.onSpeechResultsfn.bind(this);
     Voice.onSpeechEnd = this.onSpeechEndfn.bind(this);
-    //   Tts.addEventListener('tts-start', event => console.log('start', event));
-    //   Tts.addEventListener('tts-finish', event => console.log('finish', event));
-    //   Tts.addEventListener('tts-cancel', event => console.log('cancel', event));
-  }
+    // Tts.addEventListener('tts-start', event => console.log('start', event));
+    // Tts.addEventListener('tts-finish', event => console.log('finish', event));
+    // Tts.addEventListener('tts-cancel', event => console.log('cancel', event));
+    }
 
   onSpeechResultsfn(e) {
     console.log('onSpeechResults: ', e);
@@ -87,256 +103,134 @@ class ChatbotScreen extends React.Component {
       result => this.handleResponse(result),
       error => console.log(error),
     );
-  }
-  handleWriteBG(BGamount) {
-    currDate = new Date();
-    Firebase.database()
-      .ref('/data/Analytics/')
-      .once('value', snapshot => {
-        var high = snapshot.child('HighestBG').val();
-        var low = snapshot.child('LowestBG').val();
-        this.setState({
-          BgHigh: high,
-          BgLow: low,
-        });
-      });
-    Firebase.database()
-      .ref('/users/' + this.state.currUser + '/Analytics/BloodGlucoseLog/')
-      .push({
-        currDate: BGamount,
-      });
-    if (this.state.BgHigh == 'Null') {
-      Firebase.database()
-        .ref('/users/' + this.state.currUser + '/Analytics/')
-        .update({
-          HighestBG: amount,
-          HighestBGdate: currDate,
-        });
-    }
-    if (this.state.BgLow == 'Null') {
-      Firebase.database()
-        .ref('/users/' + this.state.currUser + '/Analytics/')
-        .update({
-          LowestBG: amount,
-          LowestBGdate: currDate,
-        });
-    }
-    if (this.state.BgHigh < amount) {
-      Firebase.database()
-        .ref('/users/' + this.state.currUser + '/Analytics/')
-        .update({
-          HighestBG: amount,
-          HighestBGdate: currDate,
-        });
-    } else if (this.state.BgLow > amount) {
-      Firebase.database()
-        .ref('/users/' + this.state.currUser + '/Analytics/')
-        .update({
-          LowestBG: amount,
-          LowestBGdate: currDate,
-        });
-    }
-    return 'success';
+  } 
+ updateMyState(){
+    Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").once('value', snapshot => {
+              var high = snapshot.child("HighestBG").val()
+              var highdate = snapshot.child("HighestBGdate").val()
+              var low = snapshot.child("LowestBG").val()
+              var lowdate = snapshot.child("LowestBGdate").val()
+              this.setState({
+                        BgHigh: high,
+                        BgHighdate: highdate,
+                        BgLow: low,
+                        BgLowdate: lowdate
+                })
+                  });
   }
 
   //can currently handle
   //"what is my highest/lowest blood pressure"
   //"what is my highest/lowest blood glucose"
   //returns either a response or Null
-  hanldeRead(res) {
-    //Firebase.database().ref(userId + '/items/').on('value', (snapshot) => {
-    if (res[1] == 'blood') {
-      if (res[2] == 'pressure') {
-        if (res[3] == 'highest') {
-          Firebase.database()
-            .ref('/data/Analytics/')
-            .once('value', snapshot => {
-              var high = snapshot.child('HighestBP').val();
-              this.setState({
-                BpHigh: high,
-              });
-            });
-          return 'Your highest Blood Pressure was ' + this.state.BpHigh;
-        } else if (res[3] == 'lowest') {
-          Firebase.database()
-            .ref('/data/Analytics/')
-            .once('value', snapshot => {
-              var low = snapshot.child('LowestBP').val();
-              this.setState({
-                BpLow: low,
-              });
-            });
-          return 'Your lowest Blood Pressure was ' + this.state.BpLow;
-        }
-      } else if (res[2] == 'glucose') {
-        if (res[3] == 'highest') {
-          Firebase.database()
-            .ref('/users/' + this.state.currUser + '/Analytics/')
-            .once('value', snapshot => {
-              var high = snapshot.child('HighestBG').val();
-              var highdate = snapshot.child('HighestBGdate').val();
-              this.setState({
-                BgHigh: high,
-                BgHighdate: highdate,
-              });
-            });
-          return (
-            'Your highest Blood Glucose was ' +
-            this.state.BgHigh +
-            ' on ' +
-            BgHighdate
-          );
-        } else if (res[3] == 'lowest') {
-          Firebase.database()
-            .ref('/users/' + this.state.currUser + '/Analytics/')
-            .once('value', snapshot => {
-              var low = snapshot.child('LowestBG').val();
-              var lowdate = snapshot.child('LowestBGdate').val();
-              this.setState({
-                BgLow: low,
-                BgLowdate: lowdate,
-              });
-            });
-          return (
-            'Your lowest Blood Glucose was ' +
-            this.state.BgLow +
-            ' on ' +
-            BgLowdate
-          );
+  handleRead(res){
+    this.updateMyState();
+      if(res[1] == 'blood'){
+        if(res[2] == 'glucose'){
+          if(res[3] == 'highest'){
+                  return "Your highest Blood Glucose was " + this.state.BgHigh + " on " + this.state.BgHighdate;
+          }
+          else if(res[3] == 'lowest'){
+                return "Your lowest Blood Glucose was " + this.state.BgLow + " on " + this.state.BgLowdate;
+          }
         }
       }
-    }
-    return 'Null';
-    //text = result;
+      return 'Null';
   }
 
   //can currently handle
   //"my blood pressure today is (number)"
   //returns either success or Null
-  hanldeWrite(res) {
-    console.log(res[1] + res[2] + ' ' + res[3]);
-    if (res[1] == 'blood') {
-      if (res[2] == 'pressure') {
-        var amount = res[3];
-        Firebase.database()
-          .ref('/data/Analytics/')
-          .update({
-            CurrentBP: amount,
-          });
-        //sees if blood pressure if greater than highest bp or lower than lowest bp
-        //if it is then update the values in firebase
-        Firebase.database()
-          .ref('/data/Analytics/')
-          .once('value', snapshot => {
-            var high = snapshot.child('HighestBP').val();
-            var low = snapshot.child('LowestBP').val();
-            this.setState({
-              BpHigh: high,
-              BpLow: low,
-            });
-          });
-        if (this.state.BpHigh == 'Null') {
-          Firebase.database()
-            .ref('/data/Analytics/')
-            .update({
-              HighestBP: amount,
-            });
+  handleWrite(res){
+      console.log(res[1]+res[2]+' '+res[3]);
+      if(res[1] == 'blood'){
+        if(res[2] == 'glucose'){
+          var amount = res[3];
+          result = this.handleWriteBG(amount);
+          return result;
         }
-        if (this.state.BpLow == 'Null') {
-          Firebase.database()
-            .ref('/data/Analytics/')
-            .update({
-              LowestBP: amount,
-            });
-        }
-        if (this.state.BpHigh < amount) {
-          Firebase.database()
-            .ref('/data/Analytics/')
-            .update({
-              HighestBP: amount,
-            });
-        } else if (this.state.BpLow > amount) {
-          Firebase.database()
-            .ref('/data/Analytics/')
-            .update({
-              LowestBP: amount,
-            });
-        }
-        return 'success';
-      } else if (res[2] == 'glucose') {
-        var amount = res[3];
-        Firebase.database()
-          .ref('/users/' + this.state.currUser + '/Analytics/')
-          .update({
-            CurrentBG: amount,
-          });
-        result = handleWriteBG(amount);
-        return result;
-      }
-    }
 
-    return 'Null';
+      }
+    
+      return "Null";
   }
 
-  handleResponse(result) {
-    var high;
-    this.setState({
-      BpHigh: 2,
-    });
-    Firebase.database()
-      .ref('/data/Analytics/')
-      .once('value', snapshot => {
-        high = snapshot.child('HighestBP').val();
-        this.setState({
-          BpHigh: 1,
-        });
+  handleWriteBG(BGamount){
+      currDate = new Date();
+      var pushlog = Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/BloodGlucoseLog/");
+      pushlog.push({
+          date: currDate,
+          value: BGamount,
       });
-    console.log(
-      '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++First Value\n',
-    );
-    console.log(high);
-    console.log(
-      '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Second Value\n',
-    );
-    console.log(this.state.BpHigh);
-    console.log(
-      '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Third Value\n',
-    );
-    Firebase.database()
-      .ref('/data/Analytics/')
-      .once('value', snapshot => {
-        high = snapshot.child('HighestBP').val();
+    if(this.state.BgHigh == 'Null'){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            HighestBG: BGamount,
+            HighestBGdate: currDate
       });
-    console.log(high);
-    console.log(
-      '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++END\n',
-    );
+      this.setState({
+                        BgHigh: BGamount,
+                        BgHighdate: currDate,
+                });
+    }
+    if(this.state.BgLow == 'Null'){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            LowestBG: BGamount,
+            LowestBGdate: currDate
+      });
+      this.setState({
+                        BgLow: BGamount,
+                        BgLowdate: currDate,
+                });
+    }
+    if(this.state.BgHigh < BGamount){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            HighestBG: BGamount,
+            HighestBGdate: currDate
+      });
+      this.setState({
+                        BgHigh: BGamount,
+                        BgHighdate: currDate,
+                });
+    }else if(this.state.BgLow > BGamount){
+      Firebase.database().ref("/users/" + this.state.currUser + "/Analytics/").update({
+            LowestBG: BGamount,
+            LowestBGdate: currDate
+      });
+       this.setState({
+                        BgLow: BGamount,
+                        BgLowdate: currDate,
+                });
+    }
+      return 'success';
+  }
 
+    handleResponse(result) {
     console.log(result);
-    console.log('Response reached');
+    console.log("Response reached");
     let text = result.queryResult.fulfillmentMessages[0].text.text[0];
-    var res = text.split(' ');
-    if (res[0] == 'Read') {
-      text = 'Could not retreive your data sorry';
-      var response = this.hanldeRead(res);
-      if (response != 'Null') {
-        text = response;
-      }
-      let payload = result.queryResult.webhookPayload;
-      this.showResponse(text, payload);
-    } else if (res[0] == 'write') {
-      text = 'Storing your data';
-      var response = this.hanldeWrite(res);
-      if (response != 'success') {
-        text = 'Could not store your data sorry';
-      }
-      let payload = result.queryResult.webhookPayload;
-      this.showResponse(text, payload);
-    } else {
-      let payload = result.queryResult.webhookPayload;
-      this.showResponse(text, payload);
+    var res = text.split(" ");
+    if(res[0] == 'Read') {
+        text = 'Could not retreive your data sorry';
+        var response = this.handleRead(res);
+        if(response != 'Null'){
+            text = response;
+        }
+        let payload = result.queryResult.webhookPayload;
+        this.showResponse(text, payload);
+    } else if(res[0] == 'write') {
+        text = 'Storing your data';
+        var response = this.handleWrite(res);
+        if(response != 'success'){
+            text = "Could not store your data sorry";
+        }
+        let payload = result.queryResult.webhookPayload;
+        this.showResponse(text, payload);
     }
-  }
+    else {
+        let payload = result.queryResult.webhookPayload;
+        this.showResponse(text, payload);
+    }
+}
 
   showResponse(text, payload) {
     let msg = {
