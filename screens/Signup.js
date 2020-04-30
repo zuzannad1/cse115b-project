@@ -1,5 +1,6 @@
 import React from 'react';
 import Firebase from '../config/Firebase';
+import {ScrollView } from 'react-native';
 import {
   Image,
   View,
@@ -17,18 +18,63 @@ class Signup extends React.Component {
       .createUserWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate('MyProfileScreen'))
       .catch(error => console.log(error));
+
+    Firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => this.props.navigation.navigate('Profile'))
+      .catch(error => console.log(error));
+
+    Firebase.database().ref("/users/" + Firebase.auth().currentUser.uid).set({
+                    Analytics:
+                    {
+                      BestTime: "Null",
+                      Bestday: "Null",
+                      BloodGlucoseLog: {
+
+                      },
+                      CurrentBG: "Null",
+                      HighestBG: "Null",
+                      HighestBGdate: "Null",
+                      LowestBG: "Null",
+                      LowestBGdate: "Null"
+                    },
+
+                    Profile:
+                    {
+                      Age: this.state.Age,
+                      City: this.state.City,
+                      FirstName: this.state.FirstName,
+                      Height: this.state.Height,
+                      LastName: this.state.LastName,
+                      MedicineList: {
+                        exampleName: "exampleName"
+                      },
+                      State: this.state.State,
+                      Type_ofDiabetes: this.state.Type_ofDiabetes,
+                      Weight: this.state.Weight,
+                      email: this.state.email
+                    }
+                  });
   };
 
   state = {
     name: '',
     email: '',
     password: '',
+    Age: '',
+    City: '',
+    FirstName: '',
+    Height: '',
+    LastName: '',
+    State: '',
+    Type_ofDiabetes: '',
+    Weight: ''
   };
+
 
   render() {
     return (
       <View style={styles.foundation}>
-        <View style={styles.buttonSpace} />
         <View style={styles.header}>
           <Image
             style={styles.image}
@@ -37,7 +83,7 @@ class Signup extends React.Component {
         </View>
 
         <View style={styles.container}>
-          <View style={styles.buttonSpace} />
+          <ScrollView>
 
           <TextInput
             style={styles.inputBox}
@@ -59,20 +105,53 @@ class Signup extends React.Component {
             placeholder="Password"
             secureTextEntry={true}
           />
-
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.Age}
+            onChangeText={Age => this.setState({Age})}
+            placeholder="Age"
+          />
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.password}
+            onChangeText={Weight => this.setState({Weight})}
+            placeholder="Weight"
+          />
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.password}
+            onChangeText={City => this.setState({City})}
+            placeholder="City"
+          />
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.password}
+            onChangeText={State => this.setState({State})}
+            placeholder="State"
+          />
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.password}
+            onChangeText={Type_ofDiabetes => this.setState({Type_ofDiabetes})}
+            placeholder="Type_ofDiabetes"
+          />
+          <TextInput
+            style={styles.inputBox}
+            value={this.state.password}
+            onChangeText={Height => this.setState({Height})}
+            placeholder="Pretty average I guess"
+          />
+          </ScrollView>
+        </View>
+        <View style={styles.footer}>
           <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
             <Text style={styles.buttonText}>Signup</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.props.navigation.navigate('Login')}>
+          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Login')}>
             <Text style={styles.buttonText}>Take me back!</Text>
           </TouchableOpacity>
-
-          <View style={styles.buttonSpace} />
         </View>
-        <View style={styles.footer} />
       </View>
     );
   }
@@ -97,13 +176,15 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    flex: 1.5,
+    flex: 3,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
+    marginLeft: '10%',
+    marginRight: '10%',
   },
   inputBox: {
-    width: '85%',
+    width: '100%',
     margin: 10,
     padding: 15,
     fontSize: 16,
