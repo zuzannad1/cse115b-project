@@ -113,33 +113,33 @@ class Signup extends React.Component {
           />
           <TextInput
             style={styles.inputBox}
-            value={this.state.password}
+            value={this.state.Weight}
             onChangeText={Weight => this.setState({Weight})}
             placeholder="Weight"
           />
           <TextInput
             style={styles.inputBox}
-            value={this.state.password}
+            value={this.state.City}
             onChangeText={City => this.setState({City})}
             placeholder="City"
           />
           <TextInput
             style={styles.inputBox}
-            value={this.state.password}
+            value={this.state.State}
             onChangeText={State => this.setState({State})}
             placeholder="State"
           />
           <TextInput
             style={styles.inputBox}
-            value={this.state.password}
+            value={this.state.Type_ofDiabetes}
             onChangeText={Type_ofDiabetes => this.setState({Type_ofDiabetes})}
-            placeholder="Type_ofDiabetes"
+            placeholder="Type of Diabetes"
           />
           <TextInput
             style={styles.inputBox}
-            value={this.state.password}
+            value={this.state.Height}
             onChangeText={Height => this.setState({Height})}
-            placeholder="Pretty average I guess"
+            placeholder="Height"
           />
           </ScrollView>
         </View>
