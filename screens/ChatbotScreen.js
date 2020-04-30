@@ -6,7 +6,7 @@ import Voice from 'react-native-voice';
 import {Dialogflow_V2} from 'react-native-dialogflow';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import {dialogflowConfig} from '../config';
-//import Tts from 'react-native-tts';
+import Tts from 'react-native-tts';
 
 import Firebase from '../config/Firebase';
 
@@ -42,6 +42,7 @@ class ChatbotScreen extends React.Component {
       },
     ],
     results: [],
+    twice: 0,
   };
 
    UNSAFE_componentWillMount(){
@@ -63,23 +64,22 @@ class ChatbotScreen extends React.Component {
  constructor(props) {
     super(props);
     Voice.onSpeechResults = this.onSpeechResultsfn.bind(this);
-    Voice.onSpeechEnd = this.onSpeechEndfn.bind(this);
-    // Tts.addEventListener('tts-start', event => console.log('start', event));
-    // Tts.addEventListener('tts-finish', event => console.log('finish', event));
-    // Tts.addEventListener('tts-cancel', event => console.log('cancel', event));
+    Tts.addEventListener('tts-start', event => console.log('start', event));
+    Tts.addEventListener('tts-finish', event => console.log('finish', event));
+    Tts.addEventListener('tts-cancel', event => console.log('cancel', event));
     }
 
   onSpeechResultsfn(e) {
-    console.log('onSpeechResults: ', e);
-    this.setState({
-      results: e.value,
-    });
+    if(this.state.results.length == 0) { 
+       console.log('onSpeechResults: ', e);
+       this.setState({
+          results: e.value,
+       });
+       this._addVoiceMsg(this.state.results);
+    }
   }
 
-  onSpeechEndfn(e) {
-    this._addVoiceMsg(this.state.results);
-  }
-  componentWillnmount() {
+  componentWillmount() {
     Voice.destroy().then(Voice.removeAllListeners);
   }
 
@@ -248,8 +248,7 @@ class ChatbotScreen extends React.Component {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, [msg]),
     }));
-
-    //Tts.speak(msg.text);
+    Tts.speak(msg.text);
   }
 
   _startRecognition = async () => {
@@ -274,6 +273,7 @@ class ChatbotScreen extends React.Component {
   _addVoiceMsg = reses => {
     console.log('addingVoiceMsg');
     let res = reses[0];
+    console.log(res)
     let count = {
       _id: this.state.messages.length + 1,
       text: res,
@@ -326,7 +326,6 @@ class ChatbotScreen extends React.Component {
           renderBubble={this.renderBubble}
         />
         <Button onPress={this._startRecognition} title="Begin Dictation 🎤" />
-        <Button onPress={this._stopRecognition} title="End Dictation 🚫" />
       </View>
     );
   }
@@ -335,16 +334,6 @@ class ChatbotScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#FFFFFF',
-    marginBottom: 5,
-  },
-  stat: {
-    textAlign: 'center',
-    color: '#B0171F',
-    marginBottom: 1,
-  },
+  }
 });
 export default ChatbotScreen;
