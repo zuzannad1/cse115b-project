@@ -1,5 +1,6 @@
 import React from 'react';
 import Firebase from '../config/Firebase';
+import {ScrollView} from 'react-native';
 import {
   Image,
   View,
@@ -17,18 +18,59 @@ class Signup extends React.Component {
       .createUserWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate('MyProfileScreen'))
       .catch(error => console.log(error));
+    Firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => this.props.navigation.navigate('Profile'))
+      .catch(error => console.log(error));
+    var newUser = Firebase.auth().currentUser.uid;
+    Firebase.database()
+      .ref('/users/' + newUser)
+      .set({
+        Analytics: {
+          BestTime: 'Null',
+          Bestday: 'Null',
+          BloodGlucoseLog: {},
+          CurrentBG: 'Null',
+          HighestBG: 'Null',
+          HighestBGdate: 'Null',
+          LowestBG: 'Null',
+          LowestBGdate: 'Null',
+        },
+
+        Profile: {
+          Age: this.state.Age,
+          City: this.state.City,
+          FirstName: this.state.FirstName,
+          Height: this.state.Height,
+          LastName: this.state.LastName,
+          MedicineList: {
+            exampleName: 'exampleName',
+          },
+          State: this.state.State,
+          Type_ofDiabetes: this.state.Type_ofDiabetes,
+          Weight: this.state.Weight,
+          email: this.state.email,
+        },
+      });
   };
 
   state = {
-    name: '',
-    email: '',
-    password: '',
+    name: 'First name Last Name',
+    email: 'name@email.com',
+    password: '123456',
+    Age: '69',
+    City: 'City',
+    FirstName: 'FirstName',
+    Height: '3 feet',
+    LastName: 'LastName',
+    State: 'State',
+    Type_ofDiabetes: 'N/A',
+    Weight: '420',
   };
 
   render() {
     return (
       <View style={styles.foundation}>
-        <View style={styles.buttonSpace} />
         <View style={styles.header}>
           <Image
             style={styles.image}
@@ -37,29 +79,66 @@ class Signup extends React.Component {
         </View>
 
         <View style={styles.container}>
-          <View style={styles.buttonSpace} />
-
-          <TextInput
-            style={styles.inputBox}
-            value={this.state.name}
-            onChangeText={name => this.setState({name})}
-            placeholder="Full Name"
-          />
-          <TextInput
-            style={styles.inputBox}
-            value={this.state.email}
-            onChangeText={email => this.setState({email})}
-            placeholder="Email"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.inputBox}
-            value={this.state.password}
-            onChangeText={password => this.setState({password})}
-            placeholder="Password"
-            secureTextEntry={true}
-          />
-
+          <ScrollView>
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.name}
+              onChangeText={name => this.setState({name})}
+              placeholder="Full Name"
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.email}
+              onChangeText={email => this.setState({email})}
+              placeholder="Email"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.password}
+              onChangeText={password => this.setState({password})}
+              placeholder="Password"
+              secureTextEntry={true}
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.Age}
+              onChangeText={Age => this.setState({Age})}
+              placeholder="Age"
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.Weight}
+              onChangeText={Weight => this.setState({Weight})}
+              placeholder="Weight"
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.City}
+              onChangeText={City => this.setState({City})}
+              placeholder="City"
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.State}
+              onChangeText={State => this.setState({State})}
+              placeholder="State"
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.Type_ofDiabetes}
+              onChangeText={Type_ofDiabetes => this.setState({Type_ofDiabetes})}
+              placeholder="Type of Diabetes"
+            />
+            <TextInput
+              style={styles.inputBox}
+              value={this.state.Height}
+              onChangeText={Height => this.setState({Height})}
+              placeholder="Height"
+            />
+          </ScrollView>
+        </View>
+        <View style={styles.footer}>
           <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
             <Text style={styles.buttonText}>Signup</Text>
           </TouchableOpacity>
@@ -69,10 +148,7 @@ class Signup extends React.Component {
             onPress={() => this.props.navigation.navigate('Login')}>
             <Text style={styles.buttonText}>Take me back!</Text>
           </TouchableOpacity>
-
-          <View style={styles.buttonSpace} />
         </View>
-        <View style={styles.footer} />
       </View>
     );
   }
@@ -97,13 +173,15 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    flex: 1.5,
+    flex: 3,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
+    marginLeft: '10%',
+    marginRight: '10%',
   },
   inputBox: {
-    width: '85%',
+    width: '100%',
     margin: 10,
     padding: 15,
     fontSize: 16,
