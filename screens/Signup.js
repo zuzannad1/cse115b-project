@@ -18,13 +18,12 @@ class Signup extends React.Component {
       .createUserWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate('MyProfileScreen'))
       .catch(error => console.log(error));
-
     Firebase.auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate('Profile'))
       .catch(error => console.log(error));
-
-    Firebase.database().ref("/users/" + Firebase.auth().currentUser.uid).set({
+    var newUser = Firebase.auth().currentUser.uid;
+    Firebase.database().ref("/users/" + newUser).set({
                     Analytics:
                     {
                       BestTime: "Null",
@@ -58,17 +57,17 @@ class Signup extends React.Component {
   };
 
   state = {
-    name: '',
-    email: '',
-    password: '',
-    Age: '',
-    City: '',
-    FirstName: '',
-    Height: '',
-    LastName: '',
-    State: '',
-    Type_ofDiabetes: '',
-    Weight: ''
+    name: 'First name Last Name',
+    email: 'name@email.com',
+    password: '123456',
+    Age: '69',
+    City: 'City',
+    FirstName: 'FirstName',
+    Height: '3 feet',
+    LastName: 'LastName',
+    State: 'State',
+    Type_ofDiabetes: 'N/A',
+    Weight: '420'
   };
 
 
