@@ -14,16 +14,7 @@ import {
 class Signup extends React.Component {
   handleSignUp = () => {
     const {email, password} = this.state;
-    Firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('MyProfileScreen'))
-      .catch(error => console.log(error));
-    Firebase.auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Profile'))
-      .catch(error => console.log(error));
-    var newUser = Firebase.auth().currentUser.uid;
-    Firebase.database().ref("/users/" + newUser).set({
+    Firebase.auth().createUserWithEmailAndPassword(email, password).then(() => Firebase.database().ref("/users/" + Firebase.auth().currentUser.uid).set({
                     Analytics:
                     {
                       BestTime: "Null",
@@ -53,21 +44,22 @@ class Signup extends React.Component {
                       Weight: this.state.Weight,
                       email: this.state.email
                     }
-                  });
+                  }).then(() => this.props.navigation.navigate('Profile')).catch(error => console.log(error)));
+;
   };
 
   state = {
-    name: 'First name Last Name',
+    name: 'Firstname LastName',
     email: 'name@email.com',
     password: '123456',
-    Age: '69',
+    Age: '47 and 3 Months',
     City: 'City',
     FirstName: 'FirstName',
-    Height: '3 feet',
+    Height: '6ft 5in',
     LastName: 'LastName',
     State: 'State',
-    Type_ofDiabetes: 'N/A',
-    Weight: '420'
+    Type_ofDiabetes: 'Type 2',
+    Weight: '78 Pounds'
   };
 
 
