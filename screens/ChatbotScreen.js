@@ -588,7 +588,7 @@ class ChatbotScreen extends React.Component {
       if (res[2] == 'glucose') {
         var amount = res[3];
         //check if input is correct and if it is input it into the database
-        result = this.inputCheck(amount);
+        result = this.inputCheck(parseInt(amount));
         if(result == ''){
             result = this.handleWriteBG(amount);
         }else{
