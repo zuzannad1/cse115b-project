@@ -603,7 +603,7 @@ class ChatbotScreen extends React.Component {
 
   //if input is good then function returns '' else it returns error message
   inputCheck(amount){
-    if(typeof amount != "number"){
+    if(isNaN(amount)){
         return "Please input a number";
     }else{
         if(amount < 20 || amount > 399){
