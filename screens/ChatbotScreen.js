@@ -681,7 +681,7 @@ class ChatbotScreen extends React.Component {
     console.log(text);
     let displayName = result.queryResult.intent.displayName;
     var res = text.split(' ');
-    if (res[0] === 'Read') {
+    if (res[0] == 'Read') {
       text = 'Could not retreive your data sorry';
       var response = this.handleRead(res);
       if (response != 'Null') {
@@ -689,10 +689,10 @@ class ChatbotScreen extends React.Component {
       }
       let payload = result.queryResult.webhookPayload;
       this.showResponse(text, payload);
-    } else if (res[0] === 'write') {
+    } else if (res[0] == 'write') {
       text = 'Storing your data';
       var response = this.handleWrite(res);
-      if (response !== 'success') {
+      if (response != 'success') {
         text = response;
       }
       let payload = result.queryResult.webhookPayload;
