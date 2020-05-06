@@ -587,12 +587,32 @@ class ChatbotScreen extends React.Component {
     if (res[1] == 'blood') {
       if (res[2] == 'glucose') {
         var amount = res[3];
-        result = this.handleWriteBG(amount);
+        //check if input is correct and if it is input it into the database
+        result = this.inputCheck(amount);
+        if(result == ''){
+            result = this.handleWriteBG(amount);
+        }else{
+            return result;
+        }
         return result;
       }
     }
 
     return 'Null';
+  }
+
+  //if input is good then function returns '' else it returns error message
+  inputCheck(amount){
+    if(typeof amount != "number"){
+        return "Please input a number";
+    }else{
+        if(amount < 20 || amount > 399){
+            return "This input is an incredibly dangerous level, are you sure this reading is correct?";
+        }else{
+            return '';
+        }
+    }
+    return '';
   }
 
   handleWriteBG(BGamount) {
@@ -664,7 +684,7 @@ class ChatbotScreen extends React.Component {
     if (res[0] === 'Read') {
       text = 'Could not retreive your data sorry';
       var response = this.handleRead(res);
-      if (response !== 'Null') {
+      if (response != 'Null') {
         text = response;
       }
       let payload = result.queryResult.webhookPayload;
@@ -673,7 +693,7 @@ class ChatbotScreen extends React.Component {
       text = 'Storing your data';
       var response = this.handleWrite(res);
       if (response !== 'success') {
-        text = 'Could not store your data sorry';
+        text = response;
       }
       let payload = result.queryResult.webhookPayload;
       this.showResponse(text, payload);
