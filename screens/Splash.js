@@ -23,42 +23,31 @@ class Splash extends React.Component {
 				</View>
 					
 					<View style={styles.container}>
-							<Text style={styles.topText}>Choose a User</Text>
+                            <Text style={styles.topText}>Choose a User</Text>
 
-							<View style={styles.userProfile}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('UserInfo')}>
-  								<Image
-  									style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
-  									resizeMode="contain"
-  								/>
-  								<Text style={styles.profileText}> First, last</Text>
-                </TouchableOpacity>
-							</View>
+               <TouchableOpacity style={styles.userProfile} onPress={() => Firebase.auth().signInWithEmailAndPassword("agy70897@eoopy.com", "123456").then(() => this.props.navigation.navigate('UserInfo')).catch(error => console.log(error))}>
+                <Image
+                    style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
+                    resizeMode="contain"
+                />
+                <Text style={styles.profileText}> Aggie, Yellow</Text>
+              </TouchableOpacity>
 
-							<View style={styles.userProfile}>
-								<Image
-									style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
-									resizeMode="contain"
-								/>
-								<Text style={styles.profileText}> First, last</Text>
-							</View>
+              <TouchableOpacity style={styles.userProfile} onPress={() => Firebase.auth().signInWithEmailAndPassword("darrylrigby19@gmail.com", "123456").then(() => this.props.navigation.navigate('UserInfo')).catch(error => console.log(error))}>
+                <Image
+                    style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
+                    resizeMode="contain"
+                />
+                <Text style={styles.profileText}> Darryl, Rigby</Text>
+              </TouchableOpacity>
 
-							<View style={styles.userProfile}>
-								<Image
-									style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
-									resizeMode="contain"
-								/>
-								<Text style={styles.profileText}> First, last</Text>
-							</View>
-
-							<View style={styles.userProfile}>
-								<Image
-									style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
-									resizeMode="contain"
-								/>
-								<Text style={styles.profileText}> First, last</Text>
-							</View>
-
+              <TouchableOpacity style={styles.userProfile} onPress={() => Firebase.auth().signInWithEmailAndPassword("AprilCoates3131@gmail.com", "123456").then(() => this.props.navigation.navigate('UserInfo')).catch(error => console.log(error))}>
+                <Image
+                    style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
+                    resizeMode="contain"
+                />
+                <Text style={styles.profileText}> April, Coates</Text>
+              </TouchableOpacity>
 							<Text style={styles.bottomText}>Or make your own!</Text>
 
 							<View style={styles.loginButton}>
@@ -168,7 +157,7 @@ const styles = StyleSheet.create({
   	alignItems: 'stretch',
   	margin: 10,
   	borderColor: 'white',
-  	backgroundColor: 'green',
+    borderWidth: 5,
   }
 
 });

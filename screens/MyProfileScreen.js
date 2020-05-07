@@ -1,9 +1,35 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Image, TouchableOpacity} from 'react-native';
+import Firebase from '../config/Firebase';
 // Gotten from bootdey.com/react-native-snippet/23/Profile-ui-example
 
 class MyProfileScreen extends Component {
+  state = {
+    currUser: Firebase.auth().currentUser.uid
+  }
+
+  UNSAFE_componentWillMount() {
+    Firebase.database().ref('/users/' + this.state.currUser + '/Profile/').once('value', snapshot => {
+          var firstname = snapshot.child('FirstName').val();
+          var lastname = snapshot.child('LastName').val();
+          var age = snapshot.child('Age').val();
+          var weight = snapshot.child('Weight').val();
+          var city = snapshot.child('City').val();
+          var state = snapshot.child('State').val();
+          var type = snapshot.child('Type_ofDiabetes').val();
+          this.setState({
+            FirstName: firstname,
+            LastName: lastname,
+            Age: age,
+            Weight: weight,
+            City: city,
+            State: state,
+            Type_ofDiabetes: type,
+          });
+      });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -22,22 +48,21 @@ class MyProfileScreen extends Component {
             <TouchableOpacity style={styles.buttonContainer}>
               <Text>Edit Information</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() => Firebase.auth().signOut().then(() => this.props.navigation.navigate('Splash')).catch(error => console.log(error))}>
+                <Text>Log Out</Text>
+            </TouchableOpacity>
 
             <Text style={styles.heading}>Personal Information</Text>
-            <Text style={styles.description}>NAME</Text>
-            <Text style={styles.description}>AGE</Text>
-            <Text style={styles.description}>WEIGHT</Text>
-            <Text style={styles.description}>HEIGHT</Text>
+            <Text style={styles.description}>{this.state.FirstName} {this.state.LastName}</Text>
+            <Text style={styles.description}>{this.state.Age}</Text>
+            <Text style={styles.description}>{this.state.Weight}</Text>
             <View style={styles.buttonSpace} />
             <Text style={styles.heading}>Health</Text>
-            <Text style={styles.description}>TYPE OF DIABETES</Text>
+            <Text style={styles.description}>Diabetes Type {this.state.Type_ofDiabetes}</Text>
             <Text style={styles.description}>MEDICINE TYPE</Text>
-            <Text style={styles.description}>LOCATION OF PHARMACY</Text>
+            
 
             <View style={styles.footer}>
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text>Log Out</Text>
-              </TouchableOpacity>
             </View>
           </View>
         </View>
