@@ -44,6 +44,25 @@ class Signup extends React.Component {
                       Weight: this.state.Weight,
                       email: this.state.email
                     }
+                    Tags:
+                    {
+                      Counts:
+                      {
+                        FirstAid: 0,
+                        GenDiabetes: 0,
+                        LifeTips: 0,
+                        SgrLvl: 0
+                      }
+                      
+                      MostAsked:
+                      {
+                        First: "Null",
+                        Second: "Null",
+                        Third: "Null"
+                      }
+                      
+
+                    }
                   }).then(() => this.props.navigation.navigate('Profile')).catch(error => console.log(error)));
 ;
   };

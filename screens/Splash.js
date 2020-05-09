@@ -25,12 +25,12 @@ class Splash extends React.Component {
 					<View style={styles.container}>
                             <Text style={styles.topText}>Choose a User</Text>
 
-               <TouchableOpacity style={styles.userProfile} onPress={() => Firebase.auth().signInWithEmailAndPassword("agy70897@eoopy.com", "123456").then(() => this.props.navigation.navigate('UserInfo')).catch(error => console.log(error))}>
+               <TouchableOpacity style={styles.userProfile} onPress={() => Firebase.auth().signInWithEmailAndPassword("KaylumPotter1337@gmail.com", "123456").then(() => this.props.navigation.navigate('UserInfo')).catch(error => console.log(error))}>
                 <Image
                     style={styles.profileImage} source={require('../assets/uProfPlaceholder.png')}
                     resizeMode="contain"
                 />
-                <Text style={styles.profileText}> Aggie, Yellow</Text>
+                <Text style={styles.profileText}> Kaylum, Potter</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.userProfile} onPress={() => Firebase.auth().signInWithEmailAndPassword("darrylrigby19@gmail.com", "123456").then(() => this.props.navigation.navigate('UserInfo')).catch(error => console.log(error))}>

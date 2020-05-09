@@ -619,10 +619,10 @@ class ChatbotScreen extends React.Component {
     currDate = new Date();
     var pushlog = Firebase.database().ref(
       '/users/' + this.state.currUser + '/Analytics/BloodGlucoseLog/',
-    );
-    pushlog.push({
-      date: currDate,
+    ).push();
+    pushlog.update({
       value: BGamount,
+      date: currDate,
     });
     if (this.state.BgHigh == 'Null') {
       Firebase.database()
@@ -674,7 +674,7 @@ class ChatbotScreen extends React.Component {
     return 'success';
   }
 
-  handleResponse(result) {
+  handleResponse(result) {    
     console.log(result);
     console.log('Response reached');
     let text = result.queryResult.fulfillmentText;

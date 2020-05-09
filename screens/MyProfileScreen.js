@@ -28,6 +28,7 @@ class MyProfileScreen extends Component {
             Type_ofDiabetes: type,
           });
       });
+
   }
 
   render() {
