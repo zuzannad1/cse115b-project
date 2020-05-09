@@ -43,7 +43,8 @@ class Signup extends React.Component {
                       Type_ofDiabetes: this.state.Type_ofDiabetes,
                       Weight: this.state.Weight,
                       email: this.state.email
-                    }
+                    },
+
                     Tags:
                     {
                       Counts:
@@ -52,7 +53,7 @@ class Signup extends React.Component {
                         GenDiabetes: 0,
                         LifeTips: 0,
                         SgrLvl: 0
-                      }
+                      },
                       
                       MostAsked:
                       {
